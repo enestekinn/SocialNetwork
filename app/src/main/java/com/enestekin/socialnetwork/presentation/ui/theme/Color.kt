@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.ui.theme
+package com.enestekin.socialnetwork.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
