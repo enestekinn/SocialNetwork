@@ -16,11 +16,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.presentation.util.Screen
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(
-    navController: NavController
+    navController: NavController,
+    dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) {
 
     val scale = remember {
@@ -35,21 +39,24 @@ fun SplashScreen(
     // When boolean is changed coroutine canceled and relaunch
     LaunchedEffect(key1 = true) {
 
-        scale.animateTo(
-            targetValue = 2f,
-            animationSpec =  tween(
-                durationMillis = 3000,
-                easing =  {
-                    overshootInterpolator.getInterpolation(it)
-                }
-            )
+
+        withContext(dispatcher){
+            scale.animateTo(
+                targetValue = 2f,
+                animationSpec =  tween(
+                    durationMillis = 3000,
+                    easing =  {
+                        overshootInterpolator.getInterpolation(it)
+                    }
                 )
+            )
 
             delay(Constants.SPLASH_SCREEN_DURATION)
-        navController.navigate(Screen.LoginScreen.route){
             navController.popBackStack() // clear backstack
-            popUpTo(Screen.SplashScreen.route)
+            navController.navigate(Screen.LoginScreen.route)
         }
+
+
 
     }
     
