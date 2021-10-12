@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.presentation.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -16,9 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
+import com.enestekin.socialnetwork.presentation.MainFeedScreen
 import com.enestekin.socialnetwork.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceLarge
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.presentation.util.Screen
 
 @Composable
 fun LoginScreen(
@@ -68,7 +71,9 @@ Box(
         Spacer(modifier = Modifier.height(SpaceMedium))
 
         Button(
-            onClick = { },
+            onClick = {
+                      navController.navigate(Screen.MainFeedScreen.route)
+            },
             modifier = Modifier
                 .align(Alignment.End),
         ) {
@@ -86,6 +91,7 @@ Box(
             append(stringResource(id = R.string.dont_have_an_account_yet))
             append(" ")
           val signUpText = stringResource(id = R.string.sign_up)
+
                   withStyle(
                 style = SpanStyle(
                 color = MaterialTheme.colors.primary
@@ -97,6 +103,12 @@ Box(
         style = MaterialTheme.typography.body1,
         modifier = Modifier
             .align(Alignment.BottomCenter)
+// making whole text clickable
+            .clickable {
+                navController.navigate(
+                    Screen.RegisterScreen.route
+                )
+            }
 
 
          )
