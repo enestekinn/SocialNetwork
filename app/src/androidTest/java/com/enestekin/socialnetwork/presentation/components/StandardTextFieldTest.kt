@@ -13,10 +13,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.enestekin.socialnetwork.presentation.MainActivity
-import com.enestekin.socialnetwork.presentation.login.LoginScreen
 import com.enestekin.socialnetwork.presentation.util.TestTags.PASSWORD_TOGGLE
 import com.enestekin.socialnetwork.presentation.util.TestTags.STANDARD_TEXT_FIELD
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
