@@ -1,5 +1,7 @@
 package com.enestekin.socialnetwork.presentation.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -27,7 +29,7 @@ import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
 @Composable
 @Throws(IllegalArgumentException::class)
 fun RowScope.StandardBottomNavItem( // only need this in RowScope
-    icon: ImageVector,
+    icon: ImageVector? = null,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     selected: Boolean = false,
@@ -48,6 +50,14 @@ fun RowScope.StandardBottomNavItem( // only need this in RowScope
 //    }
 
 
+    // animating line  in bottomNavigation
+    val lineLength = animateFloatAsState(
+        targetValue = if (selected) 1f else 0f,
+        animationSpec = tween(
+            durationMillis = 300
+        )
+    )
+
     BottomNavigationItem(
         selected = selected,
         onClick = onClick,
@@ -66,11 +76,11 @@ fun RowScope.StandardBottomNavItem( // only need this in RowScope
                             drawLine(
                                 color = if (selected) selectedColor else unSelectedColor,
                                 start = Offset(
-                                    size.width / 2f - 15.dp.toPx(),
+                                    size.width / 2f -  lineLength.value * 15.dp.toPx(),
                                     size.height
                                 ),// coordinate system starts top left
                                 end = Offset(
-                                    size.width / 2f + 15.dp.toPx(),
+                                    size.width / 2f + lineLength.value * 15.dp.toPx(),
                                     size.height
                                 ),
                                 strokeWidth = 2.dp.toPx(),
@@ -82,10 +92,13 @@ fun RowScope.StandardBottomNavItem( // only need this in RowScope
 
                     }
             ) {
-                Icon(
-                    imageVector = icon, contentDescription = contentDescription,
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                if (icon != null){
+                    Icon(
+                        imageVector = icon, contentDescription = contentDescription,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
 
                 if (alertCount != null) {
                     val alertText = if (alertCount > 99) {
