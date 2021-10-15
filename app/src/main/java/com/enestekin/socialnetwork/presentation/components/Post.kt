@@ -41,8 +41,8 @@ import com.enestekin.socialnetwork.presentation.ui.theme.*
 
 @Composable
 fun Post(
-    post: Post,
-    profilePictureSize: Dp = 75.dp
+    post: Post,// we just send whole post for now  , but later post id
+onPostClicked: () -> Unit = {}
 ) {
 
     Box(
@@ -54,10 +54,13 @@ fun Post(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = profilePictureSize / 2f) // put the profile picture down half of it
+                .offset(y = ProfilePictureSize / 2f) // put the profile picture down half of it
                 .clip(MaterialTheme.shapes.medium) // making photo circle
                 .shadow(5.dp) // should be before background
                 .background(MediumGray)
+                .clickable {
+                    onPostClicked()
+                }
 
         ) {
             Image(
@@ -143,7 +146,7 @@ fun Post(
             painterResource(id = R.drawable.enes),
             contentDescription = "Profile Picture",
             modifier = Modifier
-                .size(profilePictureSize)
+                  .size(ProfilePictureSize)
                 .clip(CircleShape) // making photo circle
                 .align(Alignment.TopCenter)
         )
@@ -240,6 +243,8 @@ fun ActionRow(
                     onUsernameClick(username)
                 }
         )
+
+
         EngagementButtons(
 
             isLiked = isLiked,

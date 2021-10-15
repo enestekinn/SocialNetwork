@@ -1,11 +1,14 @@
 package com.enestekin.socialnetwork.presentation.components
 
+import android.widget.Toolbar
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Doorbell
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Message
@@ -17,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
@@ -29,6 +33,10 @@ fun StandardScaffold(
     navController: NavController,
     modifier: Modifier = Modifier,
     showBottomBar: Boolean = true,
+    showToolbar: Boolean = false,
+    toolbarTitle: String? = null,
+    showBackArrow: Boolean = true,
+    navActions: @Composable RowScope.() -> Unit  = {},
     bottomNavItems: List<BottomNavItem> = listOf(
         BottomNavItem(
             route = Screen.MainFeedScreen.route,
@@ -40,11 +48,11 @@ fun StandardScaffold(
             icon = Icons.Outlined.Message,
             contentDescription = "Message"
         ),
-        BottomNavItem("",null), // putting an empty item for regular order
+        BottomNavItem("", null), // putting an empty item for regular order
         BottomNavItem(
             route = Screen.ActivityScreen.route,
             // icon = Icons.Outlined.Notifications,
-            icon =ImageVector.vectorResource(id = R.drawable.ic_bell),
+            icon = ImageVector.vectorResource(id = R.drawable.ic_bell),
             contentDescription = "Activity"
         ),
 
@@ -60,6 +68,7 @@ fun StandardScaffold(
 
 
     Scaffold(
+
         bottomBar = {
             if (showBottomBar) {
                 BottomAppBar(
@@ -71,14 +80,15 @@ fun StandardScaffold(
                     BottomNavigation {
                         bottomNavItems.forEachIndexed { i, bottomNavItem ->
                             StandardBottomNavItem(
-                                icon = bottomNavItem.icon  ,
+                                icon = bottomNavItem.icon,
                                 contentDescription = bottomNavItem.contentDescription,
                                 selected = bottomNavItem.route == navController.currentDestination?.route,
                                 alertCount = bottomNavItem.alertCount,
                                 enabled = bottomNavItem.icon != null
+
                             ) {
                                 // if clicked current icon , no navigation
-                                if (navController.currentDestination?.route != bottomNavItem.route){
+                                if (navController.currentDestination?.route != bottomNavItem.route) {
                                     navController.navigate(bottomNavItem.route)
 
                                 }
@@ -91,11 +101,13 @@ fun StandardScaffold(
 
         },
         floatingActionButton = {
-            if (showBottomBar){
+            if (showBottomBar) {
                 FloatingActionButton(
                     backgroundColor = MaterialTheme.colors.primary,
-                    onClick = onFabClick) {
-                    Icon(imageVector = Icons.Default.Add,
+                    onClick = onFabClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
                         contentDescription = stringResource(id = R.string.make_post)
                     )
 

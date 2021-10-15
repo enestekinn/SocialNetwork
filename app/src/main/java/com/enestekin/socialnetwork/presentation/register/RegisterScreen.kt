@@ -58,6 +58,7 @@ fun RegisterScreen(
                 onValueChange = {
                     viewModel.setEmailText(it)
                 },
+                keyboardType = KeyboardType.Email, 
                 error = viewModel.usernameError.value,
                 hint = stringResource(id =R.string.email)
             )

@@ -72,23 +72,25 @@ fun RowScope.StandardBottomNavItem( // only need this in RowScope
                     .padding(SpaceSmall)
                     //drawing line under selected
                     .drawBehind {
-                        if (selected) {
-                            drawLine(
-                                color = if (selected) selectedColor else unSelectedColor,
-                                start = Offset(
-                                    size.width / 2f -  lineLength.value * 15.dp.toPx(),
-                                    size.height
-                                ),// coordinate system starts top left
-                                end = Offset(
-                                    size.width / 2f + lineLength.value * 15.dp.toPx(),
-                                    size.height
-                                ),
-                                strokeWidth = 2.dp.toPx(),
-                                cap = StrokeCap.Round
+
+                            if (lineLength.value > 0f) {
+                                drawLine(
+                                    color = if (selected) selectedColor else unSelectedColor,
+                                    start = Offset(
+                                        size.width / 2f -  lineLength.value * 15.dp.toPx(),
+                                        size.height
+                                    ),// coordinate system starts top left
+                                    end = Offset(
+                                        size.width / 2f + lineLength.value * 15.dp.toPx(),
+                                        size.height
+                                    ),
+                                    strokeWidth = 2.dp.toPx(),
+                                    cap = StrokeCap.Round
 
 
-                            )
-                        }
+                                )
+                            }
+
 
                     }
             ) {
@@ -98,7 +100,6 @@ fun RowScope.StandardBottomNavItem( // only need this in RowScope
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
 
                 if (alertCount != null) {
                     val alertText = if (alertCount > 99) {

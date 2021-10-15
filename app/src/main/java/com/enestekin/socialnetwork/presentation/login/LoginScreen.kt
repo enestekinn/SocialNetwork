@@ -52,6 +52,7 @@ Box(
         StandardTextField(text =viewModel.usernameText.value , onValueChange ={
             viewModel.setUsernameText(it)
         },
+            keyboardType = KeyboardType.Email,
             error = viewModel.usernameError.value,
             hint = stringResource(id = R.string.login_hint))
 

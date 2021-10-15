@@ -8,8 +8,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.presentation.components.StandardScaffold
 import com.enestekin.socialnetwork.presentation.ui.theme.SocialNetworkTheme
 import com.enestekin.socialnetwork.presentation.util.Navigation
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
             SocialNetworkTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-color = MaterialTheme.colors.background,
+                    color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxSize()
                 ) {
                     val navController = rememberNavController()
@@ -38,11 +40,13 @@ color = MaterialTheme.colors.background,
                             Screen.ActivityScreen.route,
                             Screen.ProfileScreen.route,
                         ),
+
+
                         modifier = Modifier.fillMaxSize(),
                         onFabClick = {
                             navController.navigate(Screen.CreatePostScreen.route)
                         }
-                    ){
+                    ) {
                         Navigation(navController)
                     }
 
