@@ -50,21 +50,21 @@ fun MainFeedScreen(
                 }
             }
         )
-        Post(
-            post = com.enestekin.socialnetwork.presentation.domain.models.Post(
-                username = "enestekin",
-                imageUrl = "",
-                profilePictureUrl = "",
-                description = "Lorem  Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı bili nmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyen",
-                likeCount = 17,
-                commentCount = 7
-            ),
-           onPostClicked = {
-               navController.navigate(Screen.PostDetailScreen.route)
-           }
-        )
 
     }
+    Post(
+        post = com.enestekin.socialnetwork.presentation.domain.models.Post(
+            username = "enestekin",
+            imageUrl = "",
+            profilePictureUrl = "",
+            description = "Lorem  Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı bili nmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyen",
+            likeCount = 17,
+            commentCount = 7
+        ),
+        onPostClicked = {
+            navController.navigate(Screen.PostDetailScreen.route)
+        }
+    )
 
 
 }

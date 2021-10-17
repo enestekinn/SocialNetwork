@@ -47,7 +47,7 @@ LoginScreen(navController = navController)
         composable(Screen.ProfileScreen.route){
             ProfileScreen(navController = navController)
         }
-        composable(Screen.ProfileScreen.route){
+        composable(Screen.CreatePostScreen.route){
             CreatePostScreen(navController = navController)
         }
         composable(Screen.PostDetailScreen.route){

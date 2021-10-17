@@ -42,11 +42,13 @@ import com.enestekin.socialnetwork.presentation.ui.theme.*
 @Composable
 fun Post(
     post: Post,// we just send whole post for now  , but later post id
+    modifier: Modifier = Modifier,
+    showProfileImage: Boolean = true,
 onPostClicked: () -> Unit = {}
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(SpaceMedium)
     ) {
@@ -54,7 +56,9 @@ onPostClicked: () -> Unit = {}
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = ProfilePictureSize / 2f) // put the profile picture down half of it
+                .offset(
+                    y = if (showProfileImage) ProfilePictureSizeMedium / 2f else 0.dp
+                ) // put the profile picture down half of it
                 .clip(MaterialTheme.shapes.medium) // making photo circle
                 .shadow(5.dp) // should be before background
                 .background(MediumGray)
@@ -141,15 +145,17 @@ onPostClicked: () -> Unit = {}
             }
             }
 
-        //Compose rule ->  Last drawing is on top  in this case  Image
-        Image(
-            painterResource(id = R.drawable.enes),
-            contentDescription = "Profile Picture",
-            modifier = Modifier
-                  .size(ProfilePictureSize)
-                .clip(CircleShape) // making photo circle
-                .align(Alignment.TopCenter)
-        )
+        if (showProfileImage) {
+            //Compose rule ->  Last drawing is on top
+            Image(
+                painterResource(id = R.drawable.enes),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                      .size(ProfilePictureSizeMedium)
+                    .clip(CircleShape) // making photo circle
+                    .align(Alignment.TopCenter)
+            )
+        }
     }
 
 }
