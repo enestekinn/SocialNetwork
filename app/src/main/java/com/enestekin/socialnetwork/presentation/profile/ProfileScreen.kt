@@ -1,7 +1,6 @@
 package com.enestekin.socialnetwork.presentation.profile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,7 +17,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -37,54 +36,69 @@ import com.enestekin.socialnetwork.presentation.profile.components.ProfileHeader
 import com.enestekin.socialnetwork.presentation.ui.theme.ProfilePictureSizeLarge
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.presentation.util.Screen
+import com.enestekin.socialnetwork.presentation.util.toDp
+import com.enestekin.socialnetwork.presentation.util.toPx
 
 
 @Composable
 fun ProfileScreen(navController: NavController) {
 
-    val lazyList = rememberLazyListState()
     var toolBarOffsetY by remember {
         mutableStateOf(0f)
     }
 
-    val toolbarHeightCollapsed = 56.dp
+    /*
+    val x = 5f
+    // this value takes in a specific range
+    val y = x.coerceIn(
+        minimumValue = 0f,
+        maximumValue = 10f
+    )  // 5f because of x = 5f
+
+    val z =x.coerceIn(
+    minimumValue = 7f,
+    maximumValue = 10f
+    *
+    */   //  z=7f  if x is  15   z= 10f
+
+    val toolbarHeightCollapsed = 75.dp
+
+    var imageCollapsedOffsetY = remember {
+        (toolbarHeightCollapsed - ProfilePictureSizeLarge / 2f ) / 2f
+    }
+
     val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
     val toolbarHeightExpanded = remember {
         bannerHeight + ProfilePictureSizeLarge
     }
 
+    val maxOffset = remember {
+        toolbarHeightExpanded - toolbarHeightCollapsed
+    }
+
+    var expandedRatio by remember {
+        mutableStateOf(1f)
+    }
 
     val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
+        object : NestedScrollConnection { // listen scroll event in children.
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                //available  how many pixels we actually scrolled.
                 val delta = available.y
                 val newOffset = toolBarOffsetY + delta
+                toolBarOffsetY = newOffset.coerceIn(
+                    minimumValue = -maxOffset.toPx(),
+                    maximumValue = 0f
+                )
+
+                expandedRatio = ((toolBarOffsetY + maxOffset.toPx()) / maxOffset.toPx())
+                println("EXPANDED RATIO: $expandedRatio")
 
 
-
-
-
-
-                return super.onPreScroll(available, source)
+                return Offset.Zero // if Offset is higher than 0 we must scroll  stronger.
             }
         }
     }
-
-
-//        StandardToolbar(
-//            navController = navController,
-//            title = {
-//                Text(
-//                    text = stringResource(id = R.string.your_profile),
-//                    fontWeight = FontWeight.Bold,
-//                    color = MaterialTheme.colors.onBackground
-//                )
-//            },
-//
-//            modifier = Modifier.fillMaxWidth(),
-//            showBackArrow = false,
-//
-//            )
 
     Box(
         modifier = Modifier
@@ -98,7 +112,7 @@ fun ProfileScreen(navController: NavController) {
         ) {
 
             item {
-                Spacer(modifier = Modifier.height(toolbarHeightExpanded - ProfilePictureSizeLarge / 2f),)
+                Spacer(modifier = Modifier.height(toolbarHeightExpanded - ProfilePictureSizeLarge / 2f))
             }
 
             item {
@@ -117,7 +131,7 @@ fun ProfileScreen(navController: NavController) {
                 Spacer(
                     modifier = Modifier
                         .height(SpaceMedium)
-                    )
+                )
                 Post(
                     post = Post(
                         username = "enestekin",
@@ -132,7 +146,7 @@ fun ProfileScreen(navController: NavController) {
                         navController.navigate(Screen.PostDetailScreen.route)
                     },
 
-                )
+                    )
             }
         }
         Column(
@@ -141,7 +155,13 @@ fun ProfileScreen(navController: NavController) {
 
         ) {
             BannerSection(
-                modifier = Modifier.height(bannerHeight)
+                modifier = Modifier
+                    .height(
+                        (bannerHeight * expandedRatio).coerceIn(
+                            minimumValue = toolbarHeightCollapsed,
+                            maximumValue = bannerHeight
+                        )
+                    )
             )
             Image(
                 painter = painterResource(id = R.drawable.enes),
@@ -150,23 +170,27 @@ fun ProfileScreen(navController: NavController) {
                     .align(CenterHorizontally)
                     // why we use graphicsLayer  not offset. when graphicsLayer used Image is STILL occupied where it defined in compose function
                     .graphicsLayer {
-                        translationY = -ProfilePictureSizeLarge.toPx() / 2f
+                        translationY = -ProfilePictureSizeLarge.toPx() / 2f - (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
+                        transformOrigin = TransformOrigin(
+                            pivotFractionX = 0.5f,
+                            pivotFractionY = 0f
+                        )
+                        val scale = 0.5f + expandedRatio * 0.5f
+                        scaleX = scale
+                        scaleY = scale
 
                     }
-                  //  .offset(y = -ProfilePictureSizeLarge / 2f)
-                    .size(ProfilePictureSizeLarge)
-                    .clip(CircleShape)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colors.onSurface,
-                        shape = CircleShape
+                            .size(ProfilePictureSizeLarge)
+                            .clip(CircleShape)
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colors.onSurface,
+                                shape = CircleShape
+                            )
                     )
-            )
         }
 
     }
-
-
 
 
 }
