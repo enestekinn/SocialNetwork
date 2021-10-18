@@ -35,6 +35,7 @@ import com.enestekin.socialnetwork.presentation.profile.components.BannerSection
 import com.enestekin.socialnetwork.presentation.profile.components.ProfileHeaderSection
 import com.enestekin.socialnetwork.presentation.ui.theme.ProfilePictureSizeLarge
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.presentation.util.Screen
 import com.enestekin.socialnetwork.presentation.util.toDp
 import com.enestekin.socialnetwork.presentation.util.toPx
@@ -53,9 +54,8 @@ val isFirstItemVisible = lazyListState.firstVisibleItemIndex == 0
 
   println("Scrolled down? $isFirstItemVisible")
 
-    var totalToolbarOffsetY by remember {
-        mutableStateOf(0f)
-    }
+
+val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -  (ProfilePictureSizeLarge / 4f).toPx() - SpaceSmall.toPx()) / 2f
 
     val iconSizeExpanded = 35.dp
     /*
@@ -179,10 +179,19 @@ val isFirstItemVisible = lazyListState.firstVisibleItemIndex == 0
                             maximumValue = bannerHeight
                         )
                     ),
-iconModifier = Modifier
+leftIconModifier = Modifier
     .graphicsLayer {
         translationY = (1f - expandedRatio ) * -iconCollapsedOffsetY.toPx()
-    }
+        translationX = (1f - expandedRatio) * iconHorizontalCenterLength
+    },
+                rightIconModifier =  Modifier
+                    .graphicsLayer {
+                        translationY = (1f - expandedRatio ) * -iconCollapsedOffsetY.toPx()
+                        translationX = (1f - expandedRatio) *  -iconHorizontalCenterLength
+
+
+                    },
+
             )
             Image(
                 painter = painterResource(id = R.drawable.enes),

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -27,6 +28,9 @@ fun BannerSection(
     imageModifier: Modifier = Modifier,
     iconSize: Dp =35.dp,
     iconModifier: Modifier = Modifier,
+    leftIconModifier: Modifier = Modifier,
+    rightIconModifier: Modifier = Modifier ,
+    onIconGroupWidthChange: (Int) -> Unit = {},
     onGithubClicked: () -> Unit = {},
     onInstagramClicked: () -> Unit = {},
     onLinkedInClicked: () -> Unit = {},
@@ -61,7 +65,7 @@ fun BannerSection(
                 )
         )
         Row(
-            modifier = iconModifier
+            modifier = leftIconModifier
                 .height(iconSize)
                 .align(Alignment.BottomStart)
                 .padding(SpaceSmall)
@@ -86,51 +90,53 @@ fun BannerSection(
                 contentDescription = "Kotlin",
                 modifier = Modifier.height(iconSize)
             )
-            Spacer(modifier = Modifier.width(SpaceMedium))
         }
-        Row(
-            modifier = iconModifier
-                .height(iconSize)
-                .align(Alignment.BottomEnd)
-                .padding(SpaceSmall)
 
-        ) {
-            IconButton(
-                onClick = { onGithubClicked },
-                modifier = Modifier.size(iconSize)
+            Row(
+                modifier = rightIconModifier
+                    .height(iconSize)
+                    .align(Alignment.BottomEnd)
+                    .padding(SpaceSmall)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_github_icon_1),
-                    contentDescription = "Github",
-                )
-
-            }
-
-            IconButton(
-                onClick = onInstagramClicked,
-                modifier = Modifier.size(iconSize)
-
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_instagram_glyph_1),
-                    contentDescription = "Instagram",
-                )
-
-            }
-            IconButton(
-                onClick = onLinkedInClicked,
-                modifier = Modifier.size(iconSize)
-
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_linkedin_icon_1),
-                    contentDescription = "LinkedIn",
-
+                IconButton(
+                    onClick = { onGithubClicked },
+                    modifier = Modifier.size(iconSize)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_github_icon_1),
+                        contentDescription = "Github",
                     )
-            }
 
+                }
+
+                IconButton(
+                    onClick = onInstagramClicked,
+                    modifier = Modifier.size(iconSize)
+
+                ) {
+
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_instagram_glyph_1),
+                        contentDescription = "Instagram",
+                    )
+
+                }
+                IconButton(
+                    onClick = onLinkedInClicked,
+                    modifier = Modifier.size(iconSize)
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_linkedin_icon_1),
+                        contentDescription = "LinkedIn",
+
+                        )
+                }
+
+            }
         }
+
     }
 
-}
+
 
