@@ -5,13 +5,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -20,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.presentation.ui.theme.ProfilePictureSizeLarge
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.presentation.util.toPx
@@ -30,6 +26,7 @@ fun BannerSection(
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
     iconSize: Dp =35.dp,
+    iconModifier: Modifier = Modifier,
     onGithubClicked: () -> Unit = {},
     onInstagramClicked: () -> Unit = {},
     onLinkedInClicked: () -> Unit = {},
@@ -64,7 +61,7 @@ fun BannerSection(
                 )
         )
         Row(
-            modifier = Modifier
+            modifier = iconModifier
                 .height(iconSize)
                 .align(Alignment.BottomStart)
                 .padding(SpaceSmall)
@@ -92,7 +89,7 @@ fun BannerSection(
             Spacer(modifier = Modifier.width(SpaceMedium))
         }
         Row(
-            modifier = Modifier
+            modifier = iconModifier
                 .height(iconSize)
                 .align(Alignment.BottomEnd)
                 .padding(SpaceSmall)

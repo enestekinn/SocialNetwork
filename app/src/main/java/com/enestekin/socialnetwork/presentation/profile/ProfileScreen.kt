@@ -43,10 +43,21 @@ import com.enestekin.socialnetwork.presentation.util.toPx
 @Composable
 fun ProfileScreen(navController: NavController) {
 
+    val lazyListState = rememberLazyListState()
+
     var toolBarOffsetY by remember {
         mutableStateOf(0f)
     }
 
+val isFirstItemVisible = lazyListState.firstVisibleItemIndex == 0
+
+  println("Scrolled down? $isFirstItemVisible")
+
+    var totalToolbarOffsetY by remember {
+        mutableStateOf(0f)
+    }
+
+    val iconSizeExpanded = 35.dp
     /*
     val x = 5f
     // this value takes in a specific range
@@ -65,6 +76,9 @@ fun ProfileScreen(navController: NavController) {
 
     var imageCollapsedOffsetY = remember {
         (toolbarHeightCollapsed - ProfilePictureSizeLarge / 2f ) / 2f
+    }
+    val iconCollapsedOffsetY = remember {
+        (toolbarHeightCollapsed - iconSizeExpanded) / 2f
     }
 
     val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
@@ -85,6 +99,9 @@ fun ProfileScreen(navController: NavController) {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 //available  how many pixels we actually scrolled.
                 val delta = available.y
+                if (delta > 0f && lazyListState.firstVisibleItemIndex != 0){
+                    return Offset.Zero
+                }
                 val newOffset = toolBarOffsetY + delta
                 toolBarOffsetY = newOffset.coerceIn(
                     minimumValue = -maxOffset.toPx(),
@@ -92,7 +109,6 @@ fun ProfileScreen(navController: NavController) {
                 )
 
                 expandedRatio = ((toolBarOffsetY + maxOffset.toPx()) / maxOffset.toPx())
-                println("EXPANDED RATIO: $expandedRatio")
 
 
                 return Offset.Zero // if Offset is higher than 0 we must scroll  stronger.
@@ -109,6 +125,7 @@ fun ProfileScreen(navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
+            state = lazyListState
         ) {
 
             item {
@@ -161,7 +178,11 @@ fun ProfileScreen(navController: NavController) {
                             minimumValue = toolbarHeightCollapsed,
                             maximumValue = bannerHeight
                         )
-                    )
+                    ),
+iconModifier = Modifier
+    .graphicsLayer {
+        translationY = (1f - expandedRatio ) * -iconCollapsedOffsetY.toPx()
+    }
             )
             Image(
                 painter = painterResource(id = R.drawable.enes),
@@ -170,7 +191,8 @@ fun ProfileScreen(navController: NavController) {
                     .align(CenterHorizontally)
                     // why we use graphicsLayer  not offset. when graphicsLayer used Image is STILL occupied where it defined in compose function
                     .graphicsLayer {
-                        translationY = -ProfilePictureSizeLarge.toPx() / 2f - (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
+                        translationY =
+                            -ProfilePictureSizeLarge.toPx() / 2f - (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
                         transformOrigin = TransformOrigin(
                             pivotFractionX = 0.5f,
                             pivotFractionY = 0f
@@ -180,13 +202,13 @@ fun ProfileScreen(navController: NavController) {
                         scaleY = scale
 
                     }
-                            .size(ProfilePictureSizeLarge)
-                            .clip(CircleShape)
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colors.onSurface,
-                                shape = CircleShape
-                            )
+                    .size(ProfilePictureSizeLarge)
+                    .clip(CircleShape)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colors.onSurface,
+                        shape = CircleShape
+                    )
                     )
         }
 
