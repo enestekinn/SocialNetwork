@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.presentation.profile
 
+import android.provider.ContactsContract
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -25,7 +26,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.presentation.components.Post
@@ -37,25 +40,27 @@ import com.enestekin.socialnetwork.presentation.ui.theme.ProfilePictureSizeLarge
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.presentation.util.Screen
-import com.enestekin.socialnetwork.presentation.util.toDp
 import com.enestekin.socialnetwork.presentation.util.toPx
 
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel(),
+    profilePictureSize: Dp = ProfilePictureSizeLarge
+) {
 
     val lazyListState = rememberLazyListState()
+    var toolBarOffsetY  = viewModel.toolbarOffsetY.value
+    var expandedRatio = viewModel.expandedRatio.value
 
-    var toolBarOffsetY by remember {
-        mutableStateOf(0f)
-    }
 
-val isFirstItemVisible = lazyListState.firstVisibleItemIndex == 0
+    val isFirstItemVisible = lazyListState.firstVisibleItemIndex == 0
 
   println("Scrolled down? $isFirstItemVisible")
 
 
-val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -  (ProfilePictureSizeLarge / 4f).toPx() - SpaceSmall.toPx()) / 2f
+val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -  (profilePictureSize / 4f).toPx() - SpaceSmall.toPx()) / 2f
 
     val iconSizeExpanded = 35.dp
     /*
@@ -75,7 +80,7 @@ val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.t
     val toolbarHeightCollapsed = 75.dp
 
     var imageCollapsedOffsetY = remember {
-        (toolbarHeightCollapsed - ProfilePictureSizeLarge / 2f ) / 2f
+        (toolbarHeightCollapsed - profilePictureSize / 2f ) / 2f
     }
     val iconCollapsedOffsetY = remember {
         (toolbarHeightCollapsed - iconSizeExpanded) / 2f
@@ -83,16 +88,13 @@ val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.t
 
     val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
     val toolbarHeightExpanded = remember {
-        bannerHeight + ProfilePictureSizeLarge
+        bannerHeight + profilePictureSize
     }
 
     val maxOffset = remember {
         toolbarHeightExpanded - toolbarHeightCollapsed
     }
 
-    var expandedRatio by remember {
-        mutableStateOf(1f)
-    }
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection { // listen scroll event in children.
@@ -129,7 +131,7 @@ val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.t
         ) {
 
             item {
-                Spacer(modifier = Modifier.height(toolbarHeightExpanded - ProfilePictureSizeLarge / 2f))
+                Spacer(modifier = Modifier.height(toolbarHeightExpanded - profilePictureSize / 2f))
             }
 
             item {
@@ -201,7 +203,7 @@ leftIconModifier = Modifier
                     // why we use graphicsLayer  not offset. when graphicsLayer used Image is STILL occupied where it defined in compose function
                     .graphicsLayer {
                         translationY =
-                            -ProfilePictureSizeLarge.toPx() / 2f - (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
+                            -profilePictureSize.toPx() / 2f - (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
                         transformOrigin = TransformOrigin(
                             pivotFractionX = 0.5f,
                             pivotFractionY = 0f
@@ -211,7 +213,7 @@ leftIconModifier = Modifier
                         scaleY = scale
 
                     }
-                    .size(ProfilePictureSizeLarge)
+                    .size(profilePictureSize)
                     .clip(CircleShape)
                     .border(
                         width = 1.dp,
@@ -222,6 +224,7 @@ leftIconModifier = Modifier
         }
 
     }
+
 
 
 }
