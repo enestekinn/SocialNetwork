@@ -40,16 +40,22 @@ Box(
         )
         ){
 
-    Column(verticalArrangement = Arrangement.Center, modifier = Modifier
+    Column(
+        modifier = Modifier
         .fillMaxSize()
         .align(Alignment.Center),
+        verticalArrangement = Arrangement.Center,
+
     ) {
-        Text(text = stringResource(id = R.string.login),
+        Text(
+            text = stringResource(id = R.string.login),
             style = MaterialTheme.typography.h1
         )
 
         Spacer(modifier = Modifier.height(SpaceMedium))
-        StandardTextField(text =viewModel.usernameText.value , onValueChange ={
+        StandardTextField(
+            text =viewModel.usernameText.value ,
+            onValueChange ={
             viewModel.setUsernameText(it)
         },
             keyboardType = KeyboardType.Email,
@@ -58,7 +64,9 @@ Box(
 
 
         Spacer(modifier = Modifier.height(SpaceMedium))
-        StandardTextField(text =viewModel.passwordText.value , onValueChange ={
+        StandardTextField(
+            text =viewModel.passwordText.value ,
+            onValueChange ={
             viewModel.setPasswordText(it)
         },
             hint = stringResource(id = R.string.password_hint),

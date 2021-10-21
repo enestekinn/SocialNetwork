@@ -65,7 +65,8 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(SpaceMedium))
 
             StandardTextField(
-                text = viewModel.usernameText.value, onValueChange = {
+                text = viewModel.usernameText.value,
+                onValueChange = {
                     viewModel.setUsernameText(it)
                 },
                 error = viewModel.usernameError.value,

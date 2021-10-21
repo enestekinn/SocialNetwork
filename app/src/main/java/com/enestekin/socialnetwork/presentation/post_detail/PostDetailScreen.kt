@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -19,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.presentation.components.ActionRow
@@ -202,7 +200,7 @@ fun Comment(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(ProfilePictureSizeSmall)
+                            .size(ProfilePictureSizeExtraSmall)
                     )
                     Spacer(modifier = Modifier.width(SpaceSmall))
                     Text(

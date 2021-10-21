@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.presentation.util
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,15 +15,17 @@ import com.enestekin.socialnetwork.presentation.login.LoginScreen
 import com.enestekin.socialnetwork.presentation.post_detail.PostDetailScreen
 import com.enestekin.socialnetwork.presentation.profile.ProfileScreen
 import com.enestekin.socialnetwork.presentation.register.RegisterScreen
+import com.enestekin.socialnetwork.presentation.search.SearchScreen
 import com.enestekin.socialnetwork.presentation.splash.SplashScreen
 
+@ExperimentalMaterialApi
 @Composable
 fun Navigation(navController: NavHostController)
  {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.EditProfileScreen.route
+        startDestination = Screen.LoginScreen.route
     ){
 
         composable(Screen.SplashScreen.route) {
@@ -52,6 +55,10 @@ LoginScreen(navController = navController)
         }
         composable(Screen.CreatePostScreen.route){
             CreatePostScreen(navController = navController)
+        }
+
+        composable(Screen.SearchScreen.route){
+            SearchScreen(navController = navController)
         }
         composable(Screen.PostDetailScreen.route){
             PostDetailScreen(

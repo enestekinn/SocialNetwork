@@ -8,7 +8,9 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    
+) : ViewModel() {
 
     private val _usernameText = mutableStateOf("")
     val usernameText: State<String> = _usernameText

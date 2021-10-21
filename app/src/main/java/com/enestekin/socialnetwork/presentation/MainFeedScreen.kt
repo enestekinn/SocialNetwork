@@ -38,9 +38,11 @@ fun MainFeedScreen(
             modifier = Modifier.fillMaxWidth(),
             showBackArrow = true,
             navActions = {
-                IconButton(onClick = {
+                IconButton(
+                    onClick = {
                     navController.navigate(Screen.SearchScreen.route)
-                }) {
+                }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "",

@@ -176,6 +176,8 @@ fun EditProfileScreen(
                 modifier = Modifier.align(CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(SpaceLarge))
+
+                // Flow Layout layouts children across multiple rows/columns if they exceed the available space.
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     mainAxisAlignment =  MainAxisAlignment.Center,

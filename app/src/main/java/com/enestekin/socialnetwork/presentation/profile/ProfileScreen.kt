@@ -49,18 +49,20 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     profilePictureSize: Dp = ProfilePictureSizeLarge
 ) {
-
+//A state object that can be hoisted to control and observe scrolling.
     val lazyListState = rememberLazyListState()
-    var toolBarOffsetY  = viewModel.toolbarOffsetY.value
+
+    var toolBarOffsetY = viewModel.toolbarOffsetY.value
     var expandedRatio = viewModel.expandedRatio.value
 
 
     val isFirstItemVisible = lazyListState.firstVisibleItemIndex == 0
 
-  println("Scrolled down? $isFirstItemVisible")
+    println("Scrolled down? $isFirstItemVisible")
 
 
-val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -  (profilePictureSize / 4f).toPx() - SpaceSmall.toPx()) / 2f
+    val iconHorizontalCenterLength =
+        (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f - (profilePictureSize / 4f).toPx() - SpaceSmall.toPx()) / 2f
 
     val iconSizeExpanded = 35.dp
     /*
@@ -80,7 +82,7 @@ val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.t
     val toolbarHeightCollapsed = 75.dp
 
     var imageCollapsedOffsetY = remember {
-        (toolbarHeightCollapsed - profilePictureSize / 2f ) / 2f
+        (toolbarHeightCollapsed - profilePictureSize / 2f) / 2f
     }
     val iconCollapsedOffsetY = remember {
         (toolbarHeightCollapsed - iconSizeExpanded) / 2f
@@ -98,10 +100,13 @@ val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.t
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection { // listen scroll event in children.
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+            override fun onPreScroll(
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
                 //available  how many pixels we actually scrolled.
                 val delta = available.y
-                if (delta > 0f && lazyListState.firstVisibleItemIndex != 0){
+                if (delta > 0f && lazyListState.firstVisibleItemIndex != 0) {
                     return Offset.Zero
                 }
                 val newOffset = toolBarOffsetY + delta
@@ -181,20 +186,20 @@ val iconHorizontalCenterLength  = (LocalConfiguration.current.screenWidthDp.dp.t
                             maximumValue = bannerHeight
                         )
                     ),
-leftIconModifier = Modifier
-    .graphicsLayer {
-        translationY = (1f - expandedRatio ) * -iconCollapsedOffsetY.toPx()
-        translationX = (1f - expandedRatio) * iconHorizontalCenterLength
-    },
-                rightIconModifier =  Modifier
+                leftIconModifier = Modifier
                     .graphicsLayer {
-                        translationY = (1f - expandedRatio ) * -iconCollapsedOffsetY.toPx()
-                        translationX = (1f - expandedRatio) *  -iconHorizontalCenterLength
+                        translationY = (1f - expandedRatio) * -iconCollapsedOffsetY.toPx()
+                        translationX = (1f - expandedRatio) * iconHorizontalCenterLength
+                    },
+                rightIconModifier = Modifier
+                    .graphicsLayer {
+                        translationY = (1f - expandedRatio) * -iconCollapsedOffsetY.toPx()
+                        translationX = (1f - expandedRatio) * -iconHorizontalCenterLength
 
 
                     },
 
-            )
+                )
             Image(
                 painter = painterResource(id = R.drawable.enes),
                 contentDescription = stringResource(id = R.string.profile_image),
@@ -205,6 +210,7 @@ leftIconModifier = Modifier
                         translationY =
                             -profilePictureSize.toPx() / 2f - (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
                         transformOrigin = TransformOrigin(
+                            //Return the position along the x-axis that should be used as the origin for rotation and scale transformations.
                             pivotFractionX = 0.5f,
                             pivotFractionY = 0f
                         )
@@ -220,11 +226,10 @@ leftIconModifier = Modifier
                         color = MaterialTheme.colors.onSurface,
                         shape = CircleShape
                     )
-                    )
+            )
         }
 
     }
-
 
 
 }
