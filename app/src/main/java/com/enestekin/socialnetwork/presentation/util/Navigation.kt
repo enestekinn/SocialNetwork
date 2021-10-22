@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.enestekin.socialnetwork.presentation.MainFeedScreen
+import com.enestekin.socialnetwork.presentation.PersonListScreen
 import com.enestekin.socialnetwork.presentation.activity.ActivityScreen
 import com.enestekin.socialnetwork.presentation.chat.ChatScreen
 import com.enestekin.socialnetwork.presentation.create_post.CreatePostScreen
@@ -33,6 +34,7 @@ fun Navigation(navController: NavHostController)
         }
         composable(Screen.LoginScreen.route) {
 LoginScreen(navController = navController)
+
         }
         composable(Screen.RegisterScreen.route){
             RegisterScreen(navController = navController)
@@ -74,6 +76,10 @@ LoginScreen(navController = navController)
                 ),
 
             )
+        }
+
+        composable(Screen.PersonListScreen.route){
+            PersonListScreen(navController = navController)
         }
 
     }

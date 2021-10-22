@@ -27,17 +27,13 @@ fun BannerSection(
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
     iconSize: Dp =35.dp,
-    iconModifier: Modifier = Modifier,
     leftIconModifier: Modifier = Modifier,
     rightIconModifier: Modifier = Modifier ,
     onIconGroupWidthChange: (Int) -> Unit = {},
-    onGithubClicked: () -> Unit = {},
-    onInstagramClicked: () -> Unit = {},
-    onLinkedInClicked: () -> Unit = {},
-
-    ) {
-
-
+    onGitHubClick: () -> Unit = {},
+    onInstagramClick: () -> Unit = {},
+    onLinkedInClick: () -> Unit = {}
+) {
     BoxWithConstraints(
         modifier = modifier
     ) {
@@ -59,8 +55,7 @@ fun BannerSection(
                             Color.Transparent,
                             Color.Black,
                         ),
-                        startY = constraints.maxHeight - iconSize.toPx() * 2
-
+                        startY = constraints.maxHeight - iconSize.toPx() * 2f
                     )
                 )
         )
@@ -72,10 +67,10 @@ fun BannerSection(
 
 
         ) {
-
+            Spacer(modifier = Modifier.width(SpaceSmall))
             Image(
                 painter = painterResource(id = R.drawable.ic_js_logo),
-                contentDescription = "Javascript",
+                contentDescription = "Javscript",
                 modifier = Modifier.height(iconSize)
             )
             Spacer(modifier = Modifier.width(SpaceMedium))
@@ -92,51 +87,44 @@ fun BannerSection(
             )
         }
 
-            Row(
-                modifier = rightIconModifier
-                    .height(iconSize)
-                    .align(Alignment.BottomEnd)
-                    .padding(SpaceSmall)
+        Row(
+            modifier = rightIconModifier
+                .height(iconSize)
+                .align(Alignment.BottomEnd)
+                .padding(SpaceSmall)
+        ) {
+            IconButton(
+                onClick = onGitHubClick,
+                modifier = Modifier.size(iconSize)
             ) {
-                IconButton(
-                    onClick = { onGithubClicked },
+                Image(
+                    painter = painterResource(id = R.drawable.ic_github_icon_1),
+                    contentDescription = "GitHub",
                     modifier = Modifier.size(iconSize)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_github_icon_1),
-                        contentDescription = "Github",
-                    )
-
-                }
-
-                IconButton(
-                    onClick = onInstagramClicked,
+                )
+            }
+            IconButton(
+                onClick = onInstagramClick,
+                modifier = Modifier.size(iconSize)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_instagram_glyph_1),
+                    contentDescription = "Instagram",
                     modifier = Modifier.size(iconSize)
-
-                ) {
-
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_instagram_glyph_1),
-                        contentDescription = "Instagram",
-                    )
-
-                }
-                IconButton(
-                    onClick = onLinkedInClicked,
+                )
+            }
+            IconButton(
+                onClick = onLinkedInClick,
+                modifier = Modifier.size(iconSize)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_linkedin_icon_1),
+                    contentDescription = "LinkedIn",
                     modifier = Modifier.size(iconSize)
-
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_linkedin_icon_1),
-                        contentDescription = "LinkedIn",
-
-                        )
-                }
-
+                )
             }
         }
-
     }
-
+}
 
 
