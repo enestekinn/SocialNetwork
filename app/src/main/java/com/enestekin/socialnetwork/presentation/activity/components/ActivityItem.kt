@@ -19,13 +19,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.presentation.domain.models.Activity
-import com.enestekin.socialnetwork.presentation.domain.util.ActivityAction
-import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.domain.models.Activity
+import com.enestekin.socialnetwork.domain.util.ActivityAction
+import com.enestekin.socialnetwork.ui.theme.SpaceSmall
 
 @Composable
 fun ActivityItem(
-   activity: Activity,
+    activity: Activity,
     modifier: Modifier = Modifier
 ) {
     
@@ -49,13 +49,19 @@ fun ActivityItem(
                     stringResource(id = R.string.commented_on)
                 ActivityAction.LikedPost ->
                     stringResource(id = R.string.liked)
+                 ActivityAction.FollowedYou ->
+                     ""
             }
             // determine  which post clicked
             val actionText = when(activity.actionType){
-                ActivityAction.CommentedOnPost ->
+                 ActivityAction.CommentedOnPost ->
                     stringResource(id = R.string.your_post)
-                ActivityAction.LikedPost ->
+                 ActivityAction.LikedPost ->
                     stringResource(id = R.string.your_post)
+                ActivityAction.FollowedYou ->
+                    ""
+
+
             }
            Text( text = buildAnnotatedString {
                 val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)

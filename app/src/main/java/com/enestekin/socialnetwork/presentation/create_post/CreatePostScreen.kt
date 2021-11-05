@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
@@ -20,11 +19,10 @@ import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.presentation.components.StandardToolbar
-import com.enestekin.socialnetwork.presentation.ui.theme.SpaceLarge
-import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
-import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
-import com.enestekin.socialnetwork.presentation.util.Screen
-import com.enestekin.socialnetwork.presentation.util.states.StandardTextFieldState
+import com.enestekin.socialnetwork.ui.theme.SpaceLarge
+import com.enestekin.socialnetwork.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.util.states.StandardTextFieldState
 
 @Composable
 fun CreatePostScreen(

@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.presentation.components.StandardScaffold
-import com.enestekin.socialnetwork.presentation.util.Screen
 
 @Composable
 fun ChatScreen(navController: NavController) {

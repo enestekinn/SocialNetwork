@@ -1,31 +1,24 @@
 package com.enestekin.socialnetwork.presentation.components
 
-import android.widget.Toolbar
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Doorbell
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.presentation.domain.models.BottomNavItem
-import com.enestekin.socialnetwork.presentation.util.Screen
+import com.enestekin.socialnetwork.domain.models.BottomNavItem
+import com.enestekin.socialnetwork.util.Screen
 
 
 @Composable

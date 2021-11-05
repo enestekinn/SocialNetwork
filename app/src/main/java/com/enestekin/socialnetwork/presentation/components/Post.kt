@@ -1,13 +1,10 @@
 package com.enestekin.socialnetwork.presentation.components
 
-import android.graphics.PostProcessor
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -35,16 +32,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.presentation.domain.models.Post
-import com.enestekin.socialnetwork.presentation.splash.Constants
-import com.enestekin.socialnetwork.presentation.ui.theme.*
+import com.enestekin.socialnetwork.domain.models.Post
+import com.enestekin.socialnetwork.splash.Constants
+import com.enestekin.socialnetwork.ui.theme.*
 
 @Composable
 fun Post(
     post: Post,// we just send whole post for now  , but later post id
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
-onPostClicked: () -> Unit = {}
+    onPostClicked: () -> Unit = {}
 ) {
 
     Box(

@@ -21,9 +21,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.enestekin.socialnetwork.presentation.ui.theme.HintGray
-import com.enestekin.socialnetwork.presentation.ui.theme.SpaceMedium
-import com.enestekin.socialnetwork.presentation.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.ui.theme.HintGray
+import com.enestekin.socialnetwork.ui.theme.SpaceSmall
 
 
 @Composable
