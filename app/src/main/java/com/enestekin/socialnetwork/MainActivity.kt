@@ -11,10 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.enestekin.socialnetwork.presentation.components.StandardScaffold
-import com.enestekin.socialnetwork.ui.theme.SocialNetworkTheme
-import com.enestekin.socialnetwork.util.Navigation
-import com.enestekin.socialnetwork.util.Screen
+import com.enestekin.socialnetwork.core.components.StandardScaffold
+import com.enestekin.socialnetwork.core.ui.theme.SocialNetworkTheme
+import com.enestekin.socialnetwork.core.util.Navigation
+import com.enestekin.socialnetwork.core.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
