@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.components
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon

@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.components
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.ui.theme.IconSizeMedium
+import com.enestekin.socialnetwork.core.presentation.ui.theme.IconSizeMedium
 import com.enestekin.socialnetwork.core.util.TestTags
 
 

@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.components
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -21,8 +21,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.enestekin.socialnetwork.core.ui.theme.HintGray
-import com.enestekin.socialnetwork.core.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.core.presentation.ui.theme.HintGray
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 
 
 @Composable

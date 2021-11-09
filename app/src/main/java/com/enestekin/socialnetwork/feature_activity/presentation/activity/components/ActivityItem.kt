@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.domain.models.Activity
 import com.enestekin.socialnetwork.domain.util.ActivityAction
-import com.enestekin.socialnetwork.core.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 
 @Composable
 fun ActivityItem(

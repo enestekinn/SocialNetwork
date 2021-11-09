@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.components.StandardTextField
-import com.enestekin.socialnetwork.core.components.StandardToolbar
-import com.enestekin.socialnetwork.core.ui.theme.SpaceLarge
-import com.enestekin.socialnetwork.core.ui.theme.SpaceMedium
-import com.enestekin.socialnetwork.core.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
+import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.domain.states.StandardTextFieldState
 import com.enestekin.socialnetwork.feature_post.util.PostDescriptionError
 

@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.components
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +26,7 @@ fun StandardScaffold(
     navController: NavController,
     modifier: Modifier = Modifier,
     showBottomBar: Boolean = true,
+    state: ScaffoldState,
     showToolbar: Boolean = false,
     toolbarTitle: String? = null,
     showBackArrow: Boolean = true,
@@ -93,6 +94,7 @@ fun StandardScaffold(
             }
 
         },
+        scaffoldState = state,
         floatingActionButton = {
             if (showBottomBar) {
                 FloatingActionButton(

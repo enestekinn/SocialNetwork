@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.components
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

@@ -32,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.components.StandardTextField
-import com.enestekin.socialnetwork.core.components.StandardToolbar
+import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
+import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.feature_profile.edit_profile.components.Chip
-import com.enestekin.socialnetwork.core.ui.theme.ProfilePictureSizeLarge
-import com.enestekin.socialnetwork.core.ui.theme.SpaceLarge
-import com.enestekin.socialnetwork.core.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.ui.theme.ProfilePictureSizeLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.core.domain.states.StandardTextFieldState
 import com.enestekin.socialnetwork.feature_profile.edit_profile.util.EditProfileError
 import com.google.accompanist.flowlayout.FlowRow

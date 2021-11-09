@@ -20,11 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.components.ActionRow
-import com.enestekin.socialnetwork.core.components.StandardToolbar
+import com.enestekin.socialnetwork.core.presentation.components.ActionRow
+import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.domain.models.Comment
 import com.enestekin.socialnetwork.domain.models.Post
-import com.enestekin.socialnetwork.core.ui.theme.*
+import com.enestekin.socialnetwork.core.presentation.ui.theme.*
 
 
 @Composable
@@ -121,7 +121,7 @@ Column(
 
                                 Text(
                                     text = stringResource(
-                                        id = R.string.liked_by_x_people,
+                                        id = R.string.x_likes,
                                         post.likeCount
                                     ),
                                     fontWeight = FontWeight.Bold,
@@ -247,7 +247,7 @@ fun Comment(
             }
             Spacer(modifier = Modifier.height(SpaceSmall))
             Text(
-                text = stringResource(id = R.string.liked_by_x_people, comment.likeCount),
+                text = stringResource(id = R.string.liked_by, comment.likeCount),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.onBackground

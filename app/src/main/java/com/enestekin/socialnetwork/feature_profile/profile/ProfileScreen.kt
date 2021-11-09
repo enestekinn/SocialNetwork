@@ -28,14 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.components.Post
+import com.enestekin.socialnetwork.core.presentation.components.Post
 import com.enestekin.socialnetwork.domain.models.Post
 import com.enestekin.socialnetwork.domain.models.User
 import com.enestekin.socialnetwork.feature_profile.profile.components.BannerSection
 import com.enestekin.socialnetwork.feature_profile.profile.components.ProfileHeaderSection
-import com.enestekin.socialnetwork.core.ui.theme.ProfilePictureSizeLarge
-import com.enestekin.socialnetwork.core.ui.theme.SpaceMedium
-import com.enestekin.socialnetwork.core.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.core.presentation.ui.theme.ProfilePictureSizeLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.util.Screen
 import com.enestekin.socialnetwork.core.util.toPx
 

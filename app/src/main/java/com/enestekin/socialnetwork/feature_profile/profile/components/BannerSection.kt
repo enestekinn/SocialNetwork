@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.ui.theme.SpaceMedium
-import com.enestekin.socialnetwork.core.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.util.toPx
 
 @Composable

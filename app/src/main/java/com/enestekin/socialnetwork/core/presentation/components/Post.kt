@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.components
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.domain.models.Post
 import com.enestekin.socialnetwork.feature_auth.splash.Constants
-import com.enestekin.socialnetwork.core.ui.theme.*
+import com.enestekin.socialnetwork.core.presentation.ui.theme.*
 
 @Composable
 fun Post(
@@ -120,7 +120,7 @@ fun Post(
                 ) {
                     Text(
                         text = stringResource(
-                            id = R.string.liked_by_x_people,
+                            id = R.string.x_likes,
                             post.likeCount
                         ),
                         fontWeight = FontWeight.Bold,

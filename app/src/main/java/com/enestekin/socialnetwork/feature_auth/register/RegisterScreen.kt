@@ -2,12 +2,12 @@ package com.enestekin.socialnetwork.feature_auth.register
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -17,20 +17,41 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.components.StandardTextField
+import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.feature_auth.splash.Constants
-import com.enestekin.socialnetwork.core.ui.theme.SpaceLarge
-import com.enestekin.socialnetwork.core.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.util.asString
+import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_auth.util.AuthError
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
+    scaffoldState:  ScaffoldState,
     viewModel: RegisterViewModel = hiltViewModel() //this is how  viewModel initialize by dagger-hilt
 ) {
     val usernameState = viewModel.usernameState.value
     val emailState = viewModel.emailState.value
     val passwordState = viewModel.passwordState.value
+    val registerState = viewModel.registerState.value
+    val context = LocalContext.current
+
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is RegisterViewModel.UiEvent.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        event.uiText.asString(context),
+                        duration = SnackbarDuration.Long
+                    )
+            }
+
+        }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -62,8 +83,8 @@ fun RegisterScreen(
                     viewModel.onEvent(RegisterEvent.EnteredEmail(it))
                 },
                 error = when (emailState.error) {
-                    AuthError.FieldEmpty -> {
-                        stringResource(id = R.string.this_field_cant_be_empty)
+                    is AuthError.FieldEmpty -> {
+                        stringResource(id = R.string.error_field_empty)
                     }
                     AuthError.InvalidEmail -> {
                         stringResource(id = R.string.not_a_valid_email)
@@ -82,7 +103,7 @@ fun RegisterScreen(
                 },
                 error = when (usernameState.error) {
                     AuthError.FieldEmpty -> {
-                        stringResource(id = R.string.this_field_cant_be_empty)
+                        stringResource(id = R.string.error_field_empty)
                     }
                     AuthError.InputTooShort -> {
                         stringResource(id = R.string.input_too_short,Constants.MIN_USERNAME_LENGTH)
@@ -103,7 +124,7 @@ fun RegisterScreen(
                 keyboardType = KeyboardType.Password,
                 error = when (passwordState.error) {
                    AuthError.FieldEmpty -> {
-                        stringResource(id = R.string.this_field_cant_be_empty)
+                        stringResource(id = R.string.error_field_empty)
                     }
                     AuthError.InputTooShort -> {
                         stringResource(id = R.string.input_too_short, Constants.MIN_PASSWORD_LENGTH)
@@ -121,7 +142,10 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(SpaceMedium))
 
             Button(
-                onClick = { viewModel.onEvent(RegisterEvent.Register) },
+                onClick = {
+                    viewModel.onEvent(RegisterEvent.Register)
+                          },
+                enabled  =!registerState.isLoading,
                 modifier = Modifier
                     .align(Alignment.End),
             ) {
@@ -130,6 +154,9 @@ fun RegisterScreen(
                     color = MaterialTheme.colors.onPrimary
 
                 )
+            }
+            if(registerState.isLoading){
+                CircularProgressIndicator()
             }
 
         }

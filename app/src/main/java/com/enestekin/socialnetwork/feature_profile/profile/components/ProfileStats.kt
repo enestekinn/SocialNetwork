@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.domain.models.User
-import com.enestekin.socialnetwork.core.ui.theme.SpaceLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
 
 @Composable
 fun ProfileStats(

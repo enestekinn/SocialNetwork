@@ -1,6 +1,7 @@
 package com.enestekin.socialnetwork.core.util
 
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,51 +22,56 @@ import com.enestekin.socialnetwork.feature_auth.splash.SplashScreen
 
 @ExperimentalMaterialApi
 @Composable
-fun Navigation(navController: NavHostController)
- {
+fun Navigation(
+    navController: NavHostController,
+    scaffoldState: ScaffoldState
+) {
 
     NavHost(
         navController = navController,
         startDestination = Screen.LoginScreen.route
-    ){
+    ) {
 
         composable(Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
         composable(Screen.LoginScreen.route) {
-LoginScreen(navController = navController)
+            LoginScreen(navController = navController)
 
         }
-        composable(Screen.RegisterScreen.route){
-            RegisterScreen(navController = navController)
+        composable(Screen.RegisterScreen.route) {
+            RegisterScreen(
+                navController = navController,
+            scaffoldState= scaffoldState
+            )
         }
 
-        composable(Screen.MainFeedScreen.route){
+        composable(Screen.MainFeedScreen.route) {
             MainFeedScreen(navController = navController)
         }
-        composable(Screen.ChatScreen.route){
+        composable(Screen.ChatScreen.route) {
             ChatScreen(navController = navController)
         }
-        composable(Screen.ActivityScreen.route){
+        composable(Screen.ActivityScreen.route) {
             ActivityScreen(navController = navController)
         }
-        composable(Screen.ProfileScreen.route){
+        composable(Screen.ProfileScreen.route) {
             ProfileScreen(navController = navController)
         }
-        composable(Screen.EditProfileScreen.route){
+        composable(Screen.EditProfileScreen.route) {
             EditProfileScreen(navController = navController)
         }
-        composable(Screen.CreatePostScreen.route){
+        composable(Screen.CreatePostScreen.route) {
             CreatePostScreen(navController = navController)
         }
 
-        composable(Screen.SearchScreen.route){
+        composable(Screen.SearchScreen.route) {
             SearchScreen(navController = navController)
         }
-        composable(Screen.PostDetailScreen.route){
+        composable(Screen.PostDetailScreen.route) {
             PostDetailScreen(
                 navController = navController,
-                post =  Post(
+                post = Post(
                     username = "enestekin",
                     imageUrl = "",
                     profilePictureUrl = "",
@@ -75,10 +81,10 @@ LoginScreen(navController = navController)
                     commentCount = 7
                 ),
 
-            )
+                )
         }
 
-        composable(Screen.PersonListScreen.route){
+        composable(Screen.PersonListScreen.route) {
             PersonListScreen(navController = navController)
         }
 
