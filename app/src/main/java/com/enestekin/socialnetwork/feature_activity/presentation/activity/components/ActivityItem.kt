@@ -19,8 +19,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.domain.models.Activity
-import com.enestekin.socialnetwork.domain.util.ActivityAction
+import com.enestekin.socialnetwork.core.domain.models.Activity
+import com.enestekin.socialnetwork.feature_activity.domain.ActivityAction
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 
 @Composable

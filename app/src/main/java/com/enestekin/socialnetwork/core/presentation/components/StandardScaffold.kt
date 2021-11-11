@@ -17,7 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.domain.models.BottomNavItem
+import com.enestekin.socialnetwork.core.domain.models.BottomNavItem
 import com.enestekin.socialnetwork.core.util.Screen
 
 

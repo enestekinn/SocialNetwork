@@ -4,11 +4,10 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.enestekin.socialnetwork.MainActivity
+import com.enestekin.socialnetwork.core.presentation.MainActivity
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SocialNetworkTheme
 import com.enestekin.socialnetwork.core.util.Screen
-import com.enestekin.socialnetwork.feature_auth.splash.Constants
-import com.enestekin.socialnetwork.feature_auth.splash.SplashScreen
+import com.enestekin.socialnetwork.feature_splash.presentation.SplashScreen
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.verify

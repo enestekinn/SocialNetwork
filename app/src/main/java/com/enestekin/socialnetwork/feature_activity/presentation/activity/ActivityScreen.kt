@@ -11,13 +11,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.feature_activity.presentation.activity.components.ActivityItem
+import com.enestekin.socialnetwork.core.domain.models.Activity
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
-import com.enestekin.socialnetwork.domain.models.Activity
-import com.enestekin.socialnetwork.domain.util.ActivityAction
-import com.enestekin.socialnetwork.domain.util.DateFormatUtil
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
+import com.enestekin.socialnetwork.core.util.DateFormatUtil
+import com.enestekin.socialnetwork.feature_activity.domain.ActivityAction
+import com.enestekin.socialnetwork.feature_activity.presentation.activity.components.ActivityItem
 import kotlin.random.Random
 
 @Composable

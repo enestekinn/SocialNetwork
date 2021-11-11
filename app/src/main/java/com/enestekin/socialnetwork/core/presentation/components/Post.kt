@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.domain.models.Post
-import com.enestekin.socialnetwork.feature_auth.splash.Constants
+import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.presentation.ui.theme.*
+import com.enestekin.socialnetwork.core.util.Constants.MAX_POST_DESCRIPTION_LINES
 
 @Composable
 fun Post(
@@ -109,7 +109,7 @@ fun Post(
                     },
                     style = MaterialTheme.typography.body2,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = Constants.MAX_POST_DESCRIPTION_LINES
+                    maxLines = MAX_POST_DESCRIPTION_LINES
                 )
 
                 Spacer(modifier = Modifier.height(SpaceMedium))
