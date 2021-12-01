@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.states.PasswordTextFieldState
 import com.enestekin.socialnetwork.core.domain.states.StandardTextFieldState
+import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_auth.domain.use_case.RegisterUseCase
@@ -113,9 +114,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    sealed class UiEvent {
-        data class SnackbarEvent(val uiText: UiText): UiEvent()
-    }
+
 
 }
 

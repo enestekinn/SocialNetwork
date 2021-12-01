@@ -20,6 +20,7 @@ import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
+import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.presentation.util.asString
 import com.enestekin.socialnetwork.core.util.Constants.MIN_PASSWORD_LENGTH
 import com.enestekin.socialnetwork.core.util.Constants.MIN_USERNAME_LENGTH
@@ -42,7 +43,7 @@ fun RegisterScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when(event){
-                is RegisterViewModel.UiEvent.SnackbarEvent -> {
+                is UiEvent.SnackbarEvent -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         event.uiText.asString(context),
                         duration = SnackbarDuration.Long
