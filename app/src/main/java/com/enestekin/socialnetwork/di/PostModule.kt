@@ -3,7 +3,7 @@ package com.enestekin.socialnetwork.di
 import com.enestekin.socialnetwork.feature_post.domain.data.data_source.remote.PostApi
 import com.enestekin.socialnetwork.feature_post.domain.data.repository.PostRepositoryImpl
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
-import com.enestekin.socialnetwork.feature_post.domain.use_case.GetPostsForFollowsUserCase
+import com.enestekin.socialnetwork.feature_post.domain.use_case.GetPostsForFollowsUseCase
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
 import dagger.Module
 import dagger.Provides
@@ -40,7 +40,7 @@ object PostModule {
     @Singleton
     fun providePostUseCases(repository: PostRepository): PostUseCases {
         return PostUseCases(
-            getPostsForFollows = GetPostsForFollowsUserCase(repository)
+            getPostsForFollowsUserCase = GetPostsForFollowsUseCase(repository)
         )
     }
 }
