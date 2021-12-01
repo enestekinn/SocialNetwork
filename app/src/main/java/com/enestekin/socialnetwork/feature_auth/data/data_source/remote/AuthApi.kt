@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.feature_auth.data.remote
+package com.enestekin.socialnetwork.feature_auth.data.data_source.remote
 
 import com.enestekin.socialnetwork.core.domain.data.dto.response.BasicApiResponse
 import com.enestekin.socialnetwork.feature_auth.data.dto.request.CreateAccountRequest

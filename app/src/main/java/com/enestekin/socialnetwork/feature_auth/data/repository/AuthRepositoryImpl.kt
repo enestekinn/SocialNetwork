@@ -6,9 +6,9 @@ import com.enestekin.socialnetwork.core.util.Constants.KEY_JWT_TOKEN
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.core.util.UiText
+import com.enestekin.socialnetwork.feature_auth.data.data_source.remote.AuthApi
 import com.enestekin.socialnetwork.feature_auth.data.dto.request.CreateAccountRequest
 import com.enestekin.socialnetwork.feature_auth.data.dto.request.LoginRequest
-import com.enestekin.socialnetwork.feature_auth.data.remote.AuthApi
 import retrofit2.HttpException
 import java.io.IOException
 
