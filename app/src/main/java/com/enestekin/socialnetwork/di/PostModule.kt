@@ -1,6 +1,5 @@
 package com.enestekin.socialnetwork.di
 
-import android.content.Context
 import com.enestekin.socialnetwork.feature_post.data.data_source.remote.PostApi
 import com.enestekin.socialnetwork.feature_post.data.repository.PostRepositoryImpl
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
@@ -11,7 +10,6 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -39,9 +37,8 @@ object PostModule {
     fun providePostRepository(
         api: PostApi,
         gson: Gson,
-        @ApplicationContext appContext: Context
     ): PostRepository {
-        return PostRepositoryImpl(api,gson,appContext)
+        return PostRepositoryImpl(api,gson)
     }
 
     @Provides

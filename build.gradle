@@ -5,9 +5,9 @@ buildscript {
         compose_version = '1.0.2'
     }
     repositories {
+        jcenter()
         google()
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'

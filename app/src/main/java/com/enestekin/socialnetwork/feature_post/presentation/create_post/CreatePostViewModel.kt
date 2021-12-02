@@ -22,9 +22,7 @@ private val postUseCases: PostUseCases
     private val _chosenImageUri = mutableStateOf<Uri?>(null)
     val chosenImageUri: State<Uri?> = _chosenImageUri
 
-    fun setDescriptionState(state: StandardTextFieldState) {
-        _descriptionState.value = state
-    }
+val destUri =Uri.EMPTY
 
     fun onEvent(event: CreatePostEvent){
         when(event){
@@ -33,7 +31,11 @@ private val postUseCases: PostUseCases
                     text = event.value
                 )
             }
-            is CreatePostEvent.PickedImage -> {
+            is CreatePostEvent.PickImage -> {
+                _chosenImageUri.value = event.uri
+            }
+
+            is CreatePostEvent.CropImage -> {
                 _chosenImageUri.value = event.uri
             }
             is CreatePostEvent.PostImage -> {
