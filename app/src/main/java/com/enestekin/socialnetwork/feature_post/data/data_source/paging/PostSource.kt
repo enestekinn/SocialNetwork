@@ -1,10 +1,10 @@
-package com.enestekin.socialnetwork.feature_post.domain.data.data_source.paging
+package com.enestekin.socialnetwork.feature_post.data.data_source.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.util.Constants
-import com.enestekin.socialnetwork.feature_post.domain.data.data_source.remote.PostApi
+import com.enestekin.socialnetwork.feature_post.data.data_source.remote.PostApi
 import retrofit2.HttpException
 import java.io.IOException
 

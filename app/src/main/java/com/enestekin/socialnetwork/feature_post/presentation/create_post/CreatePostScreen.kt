@@ -1,5 +1,7 @@
 package com.enestekin.socialnetwork.feature_post.presentation.create_post
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.domain.states.StandardTextFieldState
 import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
@@ -32,6 +33,13 @@ fun CreatePostScreen(
     navController: NavController,
     viewModel: CreatePostViewModel = hiltViewModel()
 ) {
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ){
+
+    viewModel.onEvent(CreatePostEvent.PickedImage(it))
+    }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -61,7 +69,7 @@ fun CreatePostScreen(
                         shape = MaterialTheme.shapes.medium
                     )
                     .clickable {
-
+galleryLauncher.launch("image/*")
                     },
                 contentAlignment = Alignment.Center
             ) {
@@ -84,14 +92,16 @@ fun CreatePostScreen(
                 singleLine = false,
                 maxLines = 5,
                 onValueChange = {
-                    viewModel.setDescriptionState(
-                        StandardTextFieldState(text = it)
+                    viewModel.onEvent(
+                        CreatePostEvent.EnterDescription(it)
                     )
                 }
             )
             Spacer(modifier = Modifier.height(SpaceLarge))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                          viewModel.onEvent(CreatePostEvent.PostImage)
+                          },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
