@@ -11,13 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 
 @Composable
 fun StandardToolbar(
-    navController: NavController,
     modifier: Modifier = Modifier,
+    onNavigateUp: () -> Unit = {},
     showBackArrow: Boolean = false,
     navActions: @Composable RowScope.() -> Unit = {},
     title: @Composable () -> Unit = {},
@@ -30,7 +29,7 @@ fun StandardToolbar(
             {
                 IconButton(
                     onClick = {
-                    navController.navigateUp()
+                   onNavigateUp()
                 }
                 ) {
                     Icon(

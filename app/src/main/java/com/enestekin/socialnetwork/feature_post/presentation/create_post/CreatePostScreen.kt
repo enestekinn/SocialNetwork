@@ -6,15 +6,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -22,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.enestekin.socialnetwork.R
@@ -32,11 +30,19 @@ import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.presentation.util.CropActivityResultContract
+import com.enestekin.socialnetwork.core.presentation.util.UiEvent
+import com.enestekin.socialnetwork.core.presentation.util.asString
+import com.enestekin.socialnetwork.feature_post.presentation.util.PostConstants
 import com.enestekin.socialnetwork.feature_post.presentation.util.PostDescriptionError
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreatePostScreen(
-    navController: NavController,
+    onNavigateUp: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
+    scaffoldState: ScaffoldState,
     viewModel: CreatePostViewModel = hiltViewModel()
 ) {
 
@@ -53,15 +59,36 @@ fun CreatePostScreen(
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ){
-viewModel.onEvent(CreatePostEvent.PickImage(it))
+
+// viewModel.onEvent(CreatePostEvent.PickImage(it))
         cropActivityLauncher.launch(it)
 
+    }
+
+val context = LocalContext.current
+
+    LaunchedEffect(key1 = true){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is UiEvent.ShowSnackbar -> {
+                    GlobalScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = event.uiText.asString(context)
+                        )
+
+                    }
+                }
+                is UiEvent.NavigateUp -> {
+onNavigateUp()
+                }
+            }
+        }
     }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         StandardToolbar(
-            navController = navController,
+            onNavigateUp = onNavigateUp,
             showBackArrow = true,
             title = {
                 Text(
@@ -121,6 +148,7 @@ viewModel.onEvent(CreatePostEvent.PickImage(it))
                 },
                 singleLine = false,
                 maxLines = 5,
+                maxLength = PostConstants.MAX_POST_DESCRIPTION_LENGTH,
                 onValueChange = {
                     viewModel.onEvent(
                         CreatePostEvent.EnterDescription(it)
@@ -132,6 +160,7 @@ viewModel.onEvent(CreatePostEvent.PickImage(it))
                 onClick = {
                           viewModel.onEvent(CreatePostEvent.PostImage)
                           },
+                enabled = !viewModel.isLoading.value,
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
@@ -139,7 +168,17 @@ viewModel.onEvent(CreatePostEvent.PickImage(it))
                     color = MaterialTheme.colors.onPrimary
                 )
                 Spacer(modifier = Modifier.width(SpaceSmall))
-                Icon(imageVector = Icons.Default.Send, contentDescription = null)
+                if (viewModel.isLoading.value){
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.onPrimary,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(CenterVertically)
+                    )
+                }else {
+                    Icon(imageVector = Icons.Default.Send, contentDescription = null)
+
+                }
             }
         }
     }

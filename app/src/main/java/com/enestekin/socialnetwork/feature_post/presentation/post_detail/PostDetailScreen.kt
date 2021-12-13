@@ -18,25 +18,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.presentation.components.ActionRow
-import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.domain.models.Comment
 import com.enestekin.socialnetwork.core.domain.models.Post
+import com.enestekin.socialnetwork.core.presentation.components.ActionRow
+import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.presentation.ui.theme.*
 
 
 @Composable
 fun PostDetailScreen(
-    navController: NavController,
+    onNavigate: (String) -> Unit = {},
+    onNavigateUp: () -> Unit = {},
     post: Post,
 ) {
 Column(
     modifier = Modifier.fillMaxSize()
 ) {
     StandardToolbar(
-        navController = navController,
+        onNavigateUp = onNavigateUp,
         title = {
             Text(
                 text = stringResource(id = R.string.your_feed),

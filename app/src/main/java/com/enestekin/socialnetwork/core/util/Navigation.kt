@@ -1,11 +1,15 @@
 package com.enestekin.socialnetwork.core.util
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.feature_activity.presentation.activity.ActivityScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.login.LoginScreen
@@ -13,10 +17,11 @@ import com.enestekin.socialnetwork.feature_auth.presentation.register.RegisterSc
 import com.enestekin.socialnetwork.feature_chat.presentation.ChatScreen
 import com.enestekin.socialnetwork.feature_post.presentation.create_post.CreatePostScreen
 import com.enestekin.socialnetwork.feature_post.presentation.main_feed.MainFeedScreen
+import com.enestekin.socialnetwork.feature_post.presentation.person_list.PersonListScreen
 import com.enestekin.socialnetwork.feature_post.presentation.post_detail.PostDetailScreen
-import com.enestekin.socialnetwork.feature_profile.edit_profile.EditProfileScreen
+import com.enestekin.socialnetwork.feature_profile.presentation.edit_profile.EditProfileScreen
 import com.enestekin.socialnetwork.feature_profile.presentation.profile.ProfileScreen
-import com.enestekin.socialnetwork.feature_profile.search.SearchScreen
+import com.enestekin.socialnetwork.feature_profile.presentation.search.SearchScreen
 import com.enestekin.socialnetwork.feature_splash.presentation.SplashScreen
 
 @ExperimentalMaterialApi
@@ -28,50 +33,89 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.SplashScreen.route
+        startDestination = Screen.SplashScreen.route,
+    modifier = Modifier.fillMaxSize()
     ) {
 
         composable(Screen.SplashScreen.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(
+                onPopBackStack = navController::popBackStack,
+                onNavigate = navController::navigate,
+            )
         }
         composable(Screen.LoginScreen.route) {
             LoginScreen(
-                navController = navController,
-            scaffoldState = scaffoldState)
-
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.RegisterScreen.route) {
             RegisterScreen(
                 navController = navController,
-            scaffoldState= scaffoldState
+                scaffoldState = scaffoldState
             )
         }
 
         composable(Screen.MainFeedScreen.route) {
-            MainFeedScreen(navController = navController,scaffoldState)
+            MainFeedScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
+
         }
         composable(Screen.ChatScreen.route) {
-            ChatScreen(navController = navController)
+            ChatScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+            )
         }
         composable(Screen.ActivityScreen.route) {
-            ActivityScreen(navController = navController)
+            ActivityScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+            )
         }
-        composable(Screen.ProfileScreen.route) {
-            ProfileScreen(navController = navController)
+       composable(
+            route = Screen.ProfileScreen.route + "?userId={userId}",
+            arguments = listOf(
+                navArgument(name = "userId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
+            ProfileScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.EditProfileScreen.route) {
-            EditProfileScreen(navController = navController)
+            EditProfileScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+            )
         }
         composable(Screen.CreatePostScreen.route) {
-            CreatePostScreen(navController = navController)
+            CreatePostScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
 
         composable(Screen.SearchScreen.route) {
-            SearchScreen(navController = navController)
+            SearchScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+            )
         }
         composable(Screen.PostDetailScreen.route) {
             PostDetailScreen(
-                navController = navController,
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
                 post = Post(
                     username = "enestekin",
                     imageUrl = "",
@@ -84,9 +128,11 @@ fun Navigation(
 
                 )
         }
-
-
-
+        composable(Screen.PersonListScreen.route) {
+            PersonListScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+         )
+        }
     }
-
 }

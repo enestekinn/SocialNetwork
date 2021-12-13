@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.User
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
@@ -24,13 +23,14 @@ import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 @ExperimentalMaterialApi
 @Composable
 fun PersonListScreen(
-    navController: NavController
+    onNavigate: (String) -> Unit = {},
+    onNavigateUp: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         StandardToolbar(
-            navController = navController,
+            onNavigateUp = onNavigateUp,
             showBackArrow = true,
             title = {
                 Text(
@@ -47,8 +47,9 @@ fun PersonListScreen(
             items(10) {
                 UserProfileItem(
                     user = User(
+                        userId = "",
                         profilePictureUrl = "",
-                        username = "Enes Tekin",
+                        username = "Philipp Lackner",
                         description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
                                 "diam nonumy eirmod tempor invidunt ut labore et dolore \n" +
                                 "magna aliquyam erat, sed diam voluptua",

@@ -5,9 +5,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.states.StandardTextFieldState
+import com.enestekin.socialnetwork.core.presentation.util.UiEvent
+import com.enestekin.socialnetwork.core.util.Resource
+import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,10 +25,15 @@ private val postUseCases: PostUseCases
     private val _descriptionState = mutableStateOf(StandardTextFieldState())
     val descriptionState: State<StandardTextFieldState> = _descriptionState
 
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     private val _chosenImageUri = mutableStateOf<Uri?>(null)
     val chosenImageUri: State<Uri?> = _chosenImageUri
 
-val destUri =Uri.EMPTY
 
     fun onEvent(event: CreatePostEvent){
         when(event){
@@ -39,17 +50,32 @@ val destUri =Uri.EMPTY
                 _chosenImageUri.value = event.uri
             }
             is CreatePostEvent.PostImage -> {
-                chosenImageUri.value?.let { uri ->
 
-                    viewModelScope.launch {
-                        postUseCases.createPostUseCase(
+
+                viewModelScope.launch {
+
+                        _isLoading.value = true
+                     val result =   postUseCases.createPostUseCase(
                             description = descriptionState.value.text,
-                            imageUri = uri
-                        )
+                            imageUri = chosenImageUri.value
+                     )
+                            when(result){
+                            is Resource.Success -> {
+                              _eventFlow.emit(UiEvent.ShowSnackbar(
+                                  uiText = UiText.StringResource(R.string.post_created)
+                              ))
+                                _eventFlow.emit(UiEvent.NavigateUp)
+                            }
+                            is Resource.Error -> {
+_eventFlow.emit(UiEvent.ShowSnackbar(
+    result.uiText ?: UiText.unknownError()
+))
+                            }
+                        }
+                        _isLoading.value = false
                     }
                 }
 
             }
         }
     }
-}

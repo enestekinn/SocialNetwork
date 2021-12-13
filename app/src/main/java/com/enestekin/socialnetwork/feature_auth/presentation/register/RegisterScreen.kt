@@ -43,7 +43,7 @@ fun RegisterScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when(event){
-                is UiEvent.SnackbarEvent -> {
+                is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         event.uiText.asString(context),
                         duration = SnackbarDuration.Long
@@ -87,7 +87,7 @@ fun RegisterScreen(
                     is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.error_field_empty)
                     }
-                    AuthError.InvalidEmail -> {
+                    is AuthError.InvalidEmail -> {
                         stringResource(id = R.string.not_a_valid_email)
                     }
                     else -> ""
@@ -102,12 +102,12 @@ fun RegisterScreen(
                 onValueChange = {
                     viewModel.onEvent(RegisterEvent.EnteredUsername(it))
                 },
-                error = when (usernameState.error) {
-                    AuthError.FieldEmpty -> {
+                error = when (viewModel.usernameState.value.error) {
+                    is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.error_field_empty)
                     }
-                    AuthError.InputTooShort -> {
-                        stringResource(id = R.string.input_too_short,MIN_USERNAME_LENGTH)
+                    is AuthError.InputTooShort -> {
+                        stringResource(id = R.string.input_too_short, MIN_USERNAME_LENGTH)
                     }
                     else -> ""
                 },
@@ -124,13 +124,13 @@ fun RegisterScreen(
                 hint = stringResource(id = R.string.password_hint),
                 keyboardType = KeyboardType.Password,
                 error = when (passwordState.error) {
-                   AuthError.FieldEmpty -> {
+                    is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.error_field_empty)
                     }
-                    AuthError.InputTooShort -> {
+                    is AuthError.InputTooShort -> {
                         stringResource(id = R.string.input_too_short, MIN_PASSWORD_LENGTH)
                     }
-                    AuthError.InvalidPassword -> {
+                    is AuthError.InvalidPassword -> {
                         stringResource(id = R.string.invalid_password)
                     }
                     else -> ""

@@ -11,9 +11,9 @@ import com.enestekin.socialnetwork.core.util.Constants
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.core.util.UiText
-import com.enestekin.socialnetwork.feature_post.data.data_source.paging.PostSource
-import com.enestekin.socialnetwork.feature_post.data.data_source.remote.PostApi
-import com.enestekin.socialnetwork.feature_post.data.data_source.remote.request.CreatePostRequest
+import com.enestekin.socialnetwork.feature_post.data.paging.PostSource
+import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
+import com.enestekin.socialnetwork.feature_post.data.remote.request.CreatePostRequest
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow

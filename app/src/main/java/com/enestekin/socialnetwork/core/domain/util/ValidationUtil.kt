@@ -8,6 +8,7 @@ import com.enestekin.socialnetwork.feature_auth.presentation.util.AuthError
 object ValidationUtil {
 
     fun validateEmail(email: String): AuthError? {
+
         val trimmedEmail = email.trim()
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -20,7 +21,9 @@ object ValidationUtil {
     }
 
     fun validateUsername(username: String): AuthError? {
+
         val trimmedUsername = username.trim()
+
         if(trimmedUsername.length < MIN_USERNAME_LENGTH) {
             return AuthError.InputTooShort
         }
@@ -31,8 +34,10 @@ object ValidationUtil {
     }
 
     fun validatePassword(password: String): AuthError? {
+
         val capitalLettersInPassword = password.any { it.isUpperCase() }
         val numberInPassword = password.any { it.isDigit() }
+
         if(!capitalLettersInPassword || !numberInPassword) {
             return AuthError.InvalidPassword
         }

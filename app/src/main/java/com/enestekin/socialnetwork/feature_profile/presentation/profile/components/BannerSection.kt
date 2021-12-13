@@ -14,8 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.util.toPx
 
@@ -23,10 +23,14 @@ import com.enestekin.socialnetwork.core.util.toPx
 fun BannerSection(
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
-    iconSize: Dp =35.dp,
+    iconSize: Dp = 35.dp,
     leftIconModifier: Modifier = Modifier,
     rightIconModifier: Modifier = Modifier ,
-    onIconGroupWidthChange: (Int) -> Unit = {},
+    bannerUrl: String? = null ,
+    topSkillUrls: List<String> = emptyList(),
+    shouldShowGitHub: Boolean = false,
+    shouldShowInstagram:Boolean = false,
+    shouldShowLinkedIn: Boolean = false,
     onGitHubClick: () -> Unit = {},
     onInstagramClick: () -> Unit = {},
     onLinkedInClick: () -> Unit = {}
@@ -36,7 +40,12 @@ fun BannerSection(
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.channelart),
+            painter = rememberImagePainter(
+                data = bannerUrl,
+            builder = {
+                crossfade(true)
+
+            }),
             contentDescription = stringResource(id = R.string.banner_image),
             contentScale = ContentScale.Crop,
             modifier = imageModifier
@@ -64,24 +73,22 @@ fun BannerSection(
 
 
         ) {
-            Spacer(modifier = Modifier.width(SpaceSmall))
-            Image(
-                painter = painterResource(id = R.drawable.ic_js_logo),
-                contentDescription = "Javscript",
-                modifier = Modifier.height(iconSize)
-            )
-            Spacer(modifier = Modifier.width(SpaceMedium))
-            Image(
-                painter = painterResource(id = R.drawable.ic_csharp_logo),
-                contentDescription = "C#",
-                modifier = Modifier.height(iconSize)
-            )
-            Spacer(modifier = Modifier.width(SpaceMedium))
-            Image(
-                painter = painterResource(id = R.drawable.ic_kotlin_logo),
-                contentDescription = "Kotlin",
-                modifier = Modifier.height(iconSize)
-            )
+            topSkillUrls.forEach { skillUrl ->
+                Spacer(modifier = Modifier.width(SpaceSmall))
+                Image(
+                    painter = rememberImagePainter(
+                        data = skillUrl,
+                        builder = {
+                            crossfade(true)
+
+                        }
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.height(iconSize)
+                )
+            }
+
+
         }
 
         Row(
@@ -90,6 +97,9 @@ fun BannerSection(
                 .align(Alignment.BottomEnd)
                 .padding(SpaceSmall)
         ) {
+
+if (shouldShowGitHub){
+
             IconButton(
                 onClick = onGitHubClick,
                 modifier = Modifier.size(iconSize)
@@ -100,6 +110,10 @@ fun BannerSection(
                     modifier = Modifier.size(iconSize)
                 )
             }
+}
+
+            if (shouldShowInstagram){
+
             IconButton(
                 onClick = onInstagramClick,
                 modifier = Modifier.size(iconSize)
@@ -110,6 +124,10 @@ fun BannerSection(
                     modifier = Modifier.size(iconSize)
                 )
             }
+            }
+
+            if (shouldShowLinkedIn) {
+
             IconButton(
                 onClick = onLinkedInClick,
                 modifier = Modifier.size(iconSize)
@@ -119,6 +137,7 @@ fun BannerSection(
                     contentDescription = "LinkedIn",
                     modifier = Modifier.size(iconSize)
                 )
+            }
             }
         }
     }

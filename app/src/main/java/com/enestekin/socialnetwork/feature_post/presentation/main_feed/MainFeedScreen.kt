@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -28,7 +27,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainFeedScreen(
-    navController: NavController,
+    onNavigate: (String) -> Unit = {},
+    onNavigateUp: () -> Unit = {},
     scaffoldState: ScaffoldState,
     viewModel: MainFeedViewModel = hiltViewModel()
 ) {
@@ -41,7 +41,7 @@ fun MainFeedScreen(
     ) {
 
         StandardToolbar(
-            navController = navController,
+            onNavigateUp = onNavigateUp,
             title = {
                 Text(
                     text = stringResource(id = R.string.your_feed),
@@ -51,11 +51,11 @@ fun MainFeedScreen(
             },
 
             modifier = Modifier.fillMaxWidth(),
-            showBackArrow = true,
+            showBackArrow = false,
             navActions = {
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.SearchScreen.route)
+                       onNavigate(Screen.SearchScreen.route)
                     }
                 ) {
                     Icon(
@@ -85,7 +85,7 @@ fun MainFeedScreen(
                             commentCount = posts?.commentCount ?: 0
                         ),
                         onPostClicked = {
-                            navController.navigate(Screen.PostDetailScreen.route)
+                            onNavigate(Screen.PostDetailScreen.route)
                         }
                     )
                 }

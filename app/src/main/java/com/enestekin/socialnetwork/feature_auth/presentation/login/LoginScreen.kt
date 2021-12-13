@@ -16,7 +16,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
@@ -29,8 +28,8 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
     scaffoldState: ScaffoldState,
+    onNavigate: (String) -> Unit = {},
 viewModel: LoginViewModel = hiltViewModel() //this is how  viewModel initialize by dagger-hilt
 ) {
 
@@ -44,13 +43,13 @@ viewModel: LoginViewModel = hiltViewModel() //this is how  viewModel initialize 
     LaunchedEffect(key1 = true){
         viewModel.eventFlow.collectLatest { event ->
             when(event){
-                is UiEvent.SnackbarEvent -> {
+                is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText.asString(context)
                     )
                 }
                 is UiEvent.Navigate -> {
-                    navController.navigate(event.route)
+                    onNavigate(event.route)
                 }
             }
         }
@@ -151,9 +150,9 @@ Box(
             .align(Alignment.BottomCenter)
 // making whole text clickable
             .clickable {
-                navController.navigate(
-                    Screen.RegisterScreen.route
-                )
+               onNavigate(
+                   Screen.RegisterScreen.route
+               )
             }
 
 

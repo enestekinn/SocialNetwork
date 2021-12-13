@@ -6,9 +6,10 @@ import com.enestekin.socialnetwork.core.util.Constants.KEY_JWT_TOKEN
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.core.util.UiText
-import com.enestekin.socialnetwork.feature_auth.data.data_source.remote.AuthApi
-import com.enestekin.socialnetwork.feature_auth.data.data_source.remote.request.CreateAccountRequest
-import com.enestekin.socialnetwork.feature_auth.data.data_source.remote.request.LoginRequest
+import com.enestekin.socialnetwork.feature_auth.data.remote.AuthApi
+import com.enestekin.socialnetwork.feature_auth.data.remote.request.CreateAccountRequest
+import com.enestekin.socialnetwork.feature_auth.data.remote.request.LoginRequest
+import com.enestekin.socialnetwork.feature_auth.domain.repository.AuthRepository
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -22,10 +23,15 @@ class AuthRepositoryImpl(
         username: String,
         password: String
     ): SimpleResource {
+        println("Enes 2")
 
         val request = CreateAccountRequest(email, username, password)
         return try {
+            println("Enes")
             val response = api.register(request)
+            println("Enes 3")
+
+            println(response.successful)
             if (response.successful) {
                 Resource.Success(Unit)
             } else {
@@ -84,6 +90,7 @@ class AuthRepositoryImpl(
                 uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
             )
         } catch (e: HttpException) {
+            println("Burasi calisti")
             Resource.Error(
                 uiText = UiText.StringResource(R.string.oops_something_went_wrong)
             )

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.Constants.SPLASH_SCREEN_DURATION
@@ -26,8 +25,9 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(
-    navController: NavController,
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    onPopBackStack: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
     viewModel: SplashViewModel = hiltViewModel()
 ) {
 
@@ -65,8 +65,8 @@ fun SplashScreen(
 
             when(event) {
                 is UiEvent.Navigate -> {
-                    navController.popBackStack()
-                    navController.navigate(event.route)
+                    onPopBackStack()
+                    onNavigate(event.route)
                 }
                 else -> Unit
             }
