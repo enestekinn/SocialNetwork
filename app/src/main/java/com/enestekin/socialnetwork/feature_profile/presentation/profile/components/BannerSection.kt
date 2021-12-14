@@ -18,6 +18,7 @@ import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.util.toPx
+import com.enestekin.socialnetwork.feature_profile.domain.model.Skill
 
 @Composable
 fun BannerSection(
@@ -25,9 +26,9 @@ fun BannerSection(
     imageModifier: Modifier = Modifier,
     iconSize: Dp = 35.dp,
     leftIconModifier: Modifier = Modifier,
-    rightIconModifier: Modifier = Modifier ,
-    bannerUrl: String? = null ,
-    topSkillUrls: List<String> = emptyList(),
+    rightIconModifier: Modifier = Modifier,
+    bannerUrl: String? = null,
+    topSkill: List<Skill> = emptyList(),
     shouldShowGitHub: Boolean = false,
     shouldShowInstagram:Boolean = false,
     shouldShowLinkedIn: Boolean = false,
@@ -73,7 +74,7 @@ fun BannerSection(
 
 
         ) {
-            topSkillUrls.forEach { skillUrl ->
+            topSkill.forEach { skillUrl ->
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 Image(
                     painter = rememberImagePainter(

@@ -23,13 +23,10 @@ class AuthRepositoryImpl(
         username: String,
         password: String
     ): SimpleResource {
-        println("Enes 2")
 
         val request = CreateAccountRequest(email, username, password)
         return try {
-            println("Enes")
             val response = api.register(request)
-            println("Enes 3")
 
             println(response.successful)
             if (response.successful) {
@@ -90,7 +87,6 @@ class AuthRepositoryImpl(
                 uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
             )
         } catch (e: HttpException) {
-            println("Burasi calisti")
             Resource.Error(
                 uiText = UiText.StringResource(R.string.oops_something_went_wrong)
             )

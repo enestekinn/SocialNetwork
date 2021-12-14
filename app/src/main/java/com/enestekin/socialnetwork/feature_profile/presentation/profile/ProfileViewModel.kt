@@ -24,7 +24,7 @@ savedStateHandle: SavedStateHandle
     private val _toolbarState = mutableStateOf(ProfileToolbarState())
     val toolbarState: State<ProfileToolbarState> = _toolbarState
 
-    private val _state = mutableStateOf<ProfileState>(ProfileState())
+    private val _state = mutableStateOf(ProfileState())
     val state: State<ProfileState> = _state
 
 
@@ -34,7 +34,6 @@ savedStateHandle: SavedStateHandle
     init {
 
         savedStateHandle.get<String>("userId")?.let { userId ->
-            println("userId geldi")
                     getProfile(userId)
         }
     }
@@ -63,7 +62,7 @@ savedStateHandle: SavedStateHandle
                 isLoading = true
             )
             val  result = profileUseCases.getProfile(userId)
-
+            println(result.data?.gitHubUrl)
             when(result){
                 is Resource.Success -> {
                     _state.value = state.value.copy(
