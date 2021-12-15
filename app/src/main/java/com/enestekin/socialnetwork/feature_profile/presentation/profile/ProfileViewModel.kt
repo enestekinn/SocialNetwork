@@ -33,9 +33,9 @@ savedStateHandle: SavedStateHandle
 
     init {
 
-        savedStateHandle.get<String>("userId")?.let { userId ->
-                    getProfile(userId)
-        }
+//        savedStateHandle.get<String>("userId")?.let { userId ->
+//                    getProfile(userId)
+//        }
     }
 
     fun setExpandedRatio(ratio: Float) {
@@ -56,7 +56,7 @@ savedStateHandle: SavedStateHandle
     }
 
 
-    private fun getProfile(userId: String){
+     fun getProfile(userId: String){
         viewModelScope.launch {
             _state.value = state.value.copy(
                 isLoading = true

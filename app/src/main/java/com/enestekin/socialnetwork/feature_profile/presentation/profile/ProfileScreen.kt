@@ -47,6 +47,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
+    userId: String,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
     scaffoldState: ScaffoldState,
@@ -84,10 +85,12 @@ fun ProfileScreen(
                     return Offset.Zero
                 }
                 val newOffset = viewModel.toolbarState.value.toolbarOffsetY + delta
-                viewModel.setToolbarOffsetY(newOffset.coerceIn(
-                    minimumValue = -maxOffset.toPx(),
-                    maximumValue = 0f
-                ))
+                viewModel.setToolbarOffsetY(
+                    newOffset.coerceIn(
+                        minimumValue = -maxOffset.toPx(),
+                        maximumValue = 0f
+                    )
+                )
                 viewModel.setExpandedRatio((viewModel.toolbarState.value.toolbarOffsetY + maxOffset.toPx()) / maxOffset.toPx())
                 return Offset.Zero
             }
@@ -95,6 +98,7 @@ fun ProfileScreen(
     }
     val context = LocalContext.current
     LaunchedEffect(key1 = true){
+        viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when(event){
                 is UiEvent.ShowSnackbar -> {
@@ -104,7 +108,6 @@ fun ProfileScreen(
 
                 }
             }
-
 
         }
     }
@@ -175,7 +178,6 @@ fun ProfileScreen(
         ) {
 
 
-            println(state.profile)
             state.profile?.let { profile ->
 
 

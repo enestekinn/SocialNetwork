@@ -97,6 +97,9 @@ fun EditProfileScreen(
                          message = event.uiText.asString(context)
                      )
                  }
+                 is UiEvent.NavigateUp -> {
+                     onNavigateUp()
+                 }
              }
          }
      }
@@ -137,13 +140,13 @@ fun EditProfileScreen(
 
             BannerEditSection(
                 bannerImage = rememberImagePainter(
-                    data = profileState.profile?.bannerUrl,
+                    data = viewModel.bannerUri.value ?: profileState.profile?.bannerUrl,
                     builder =  {
                         crossfade(true)
                     }
                 ),
                 profileImage = rememberImagePainter(
-                    data = profileState.profile?.profilePictureUrl,
+                    data = viewModel.profilePictureUri.value ?: profileState.profile?.profilePictureUrl,
                     builder =  {
                         crossfade(true)
                     }
@@ -269,14 +272,15 @@ fun EditProfileScreen(
                     crossAxisSpacing = SpaceMedium
                 ) {
 
-                   viewModel.skills.value.skills.forEach {
+                   viewModel.skills.value.skills.forEach { skill ->
 
                         Chip(
-                            text = it.name,
-                            selected = it in viewModel.skills.value.selectedSkills
-                        ) {
-
-                        }
+                            text = skill.name,
+                            selected = viewModel.skills.value.selectedSkills.any { it.name == skill.name },
+                            onChipClick = {
+                                viewModel.onEvent(EditProfileEvent.SetSkillSelected(skill))
+                            }
+                        )
                     }
 
                 }

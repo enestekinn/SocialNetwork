@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.User
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 
 @Composable
@@ -26,6 +27,7 @@ fun ProfileHeaderSection(
     isOwnProfile: Boolean = true,
     onEditClick: () -> Unit  =  {}
 ) {
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -50,9 +52,9 @@ fun ProfileHeaderSection(
                 ),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.width(SpaceSmall))
 
             if (isOwnProfile) {
+                Spacer(modifier = Modifier.width(SpaceSmall))
                 IconButton(
                     onClick = onEditClick,
                     modifier = Modifier.size(30.dp)
@@ -65,16 +67,14 @@ fun ProfileHeaderSection(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(SpaceSmall))
-
-        if (user.description.isBlank()){
-
-        Text(
-            text = user.description,
-            style = MaterialTheme.typography.body2,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(SpaceLarge))
+        Spacer(modifier = Modifier.height(SpaceMedium))
+        if(user.description.isNotBlank()) {
+            Text(
+                text = user.description,
+                style = MaterialTheme.typography.body2,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(SpaceLarge))
         }
 
         ProfileStats(user = user,isOwnProfile = isOwnProfile)

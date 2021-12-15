@@ -3,10 +3,7 @@ package com.enestekin.socialnetwork.di
 import com.enestekin.socialnetwork.feature_profile.data.remote.ProfileApi
 import com.enestekin.socialnetwork.feature_profile.data.repository.ProfileRepositoryImpl
 import com.enestekin.socialnetwork.feature_profile.domain.repository.ProfileRepository
-import com.enestekin.socialnetwork.feature_profile.domain.use_case.GetProfileUseCase
-import com.enestekin.socialnetwork.feature_profile.domain.use_case.GetSkillsUseCase
-import com.enestekin.socialnetwork.feature_profile.domain.use_case.ProfileUseCases
-import com.enestekin.socialnetwork.feature_profile.domain.use_case.UpdateProfileUseCase
+import com.enestekin.socialnetwork.feature_profile.domain.use_case.*
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -45,7 +42,8 @@ object ProfileModule {
         return ProfileUseCases(
             getProfile = GetProfileUseCase(repository),
             getSkills = GetSkillsUseCase(repository),
-            updateProfile = UpdateProfileUseCase(repository)
+            updateProfile = UpdateProfileUseCase(repository),
+        setSkillSelected = SetSkillSelectedUseCase()
         )
     }
 }
