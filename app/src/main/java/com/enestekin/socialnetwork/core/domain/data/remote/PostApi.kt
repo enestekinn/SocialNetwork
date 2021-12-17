@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.feature_post.data.remote
+package com.enestekin.socialnetwork.core.domain.data.remote
 
 import com.enestekin.socialnetwork.core.domain.data.dto.response.BasicApiResponse
 import com.enestekin.socialnetwork.core.domain.models.Post
@@ -13,6 +13,12 @@ interface PostApi {
         @Query("pageSize") pageSize: Int
     ): List<Post>
 
+    @GET("/api/user/posts")
+    suspend fun getPostsForProfile(
+        @Query("userId") userId: String,
+        @Query("page") page:Int,
+        @Query("pageSize") pageSize: Int
+    ): List<Post>
 
     // making multipart request
     @Multipart

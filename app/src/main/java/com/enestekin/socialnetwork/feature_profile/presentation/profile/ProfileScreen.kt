@@ -28,6 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.Post
@@ -54,6 +56,8 @@ fun ProfileScreen(
     profilePictureSize: Dp = ProfilePictureSizeLarge,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
+
+    val posts = viewModel.posts.collectAsLazyPagingItems()
     val lazyListState = rememberLazyListState()
     val toolbarState = viewModel.toolbarState.value
 
@@ -147,21 +151,19 @@ fun ProfileScreen(
                 }
 
             }
-            items(20) {
+            items(posts) { post ->
                 Spacer(
                     modifier = Modifier
                         .height(SpaceMedium)
                 )
                 Post(
                     post = Post(
-                        username = "Enes Tekin",
-                        imageUrl = "",
-                        profilePictureUrl = "",
-                        description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
-                                "diam nonumy eirmod tempor invidunt ut labore et dolore \n" +
-                                "magna aliquyam erat, sed diam voluptua...",
-                        likeCount = 17,
-                        commentCount = 7,
+                        username = post?.username ?: "",
+                        imageUrl = post?.imageUrl ?: "",
+                        profilePictureUrl = post?.profilePictureUrl ?: "",
+                        description = post?.description ?: "",
+                        likeCount = post?.likeCount ?: 0,
+                        commentCount = post?.commentCount ?: 0,
                     ),
                     showProfileImage = false,
                     onPostClicked = {

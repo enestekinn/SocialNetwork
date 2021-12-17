@@ -32,12 +32,12 @@ fun SplashScreen(
 ) {
 
     val scale = remember {
-        Animatable(0f)
+        Animatable(2f)
     }
 
     // making animation  bigger then smaller
     val overshootInterpolator = remember {
-        OvershootInterpolator(0f)
+        OvershootInterpolator(2f)
     }
 
     // When boolean is changed coroutine canceled and relaunch
@@ -46,9 +46,9 @@ fun SplashScreen(
 
         withContext(dispatcher){
             scale.animateTo(
-                targetValue = 0f,
+                targetValue = 4f,
                 animationSpec =  tween(
-                    durationMillis = 0,
+                    durationMillis = 2,
                     easing =  {
                         overshootInterpolator.getInterpolation(it)
                     }

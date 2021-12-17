@@ -81,6 +81,7 @@ class AuthRepositoryImpl(
 
         return try {
             api.authenticate()
+
             Resource.Success(Unit)
         } catch (e: IOException) {
             Resource.Error(

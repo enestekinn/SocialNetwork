@@ -1,6 +1,6 @@
 package com.enestekin.socialnetwork.di
 
-import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
+import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
 import com.enestekin.socialnetwork.feature_post.data.repository.PostRepositoryImpl
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
 import com.enestekin.socialnetwork.feature_post.domain.use_case.CreatePostUseCase

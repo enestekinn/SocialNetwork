@@ -6,13 +6,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.enestekin.socialnetwork.R
+import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.util.Constants
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_post.data.paging.PostSource
-import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
 import com.enestekin.socialnetwork.feature_post.data.remote.request.CreatePostRequest
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
 import com.google.gson.Gson
@@ -30,7 +30,7 @@ class PostRepositoryImpl(
 
     override val posts: Flow<PagingData<Post>>
         get() = Pager(PagingConfig(pageSize = Constants.PAGE_SIZE_POSTS)) {
-            PostSource(api)
+            PostSource(api, PostSource.Source.Follows)
         }.flow
 
     override suspend fun createPost(

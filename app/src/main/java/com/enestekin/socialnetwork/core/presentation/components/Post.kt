@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -31,11 +30,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.presentation.ui.theme.*
 import com.enestekin.socialnetwork.core.util.Constants.MAX_POST_DESCRIPTION_LINES
 
+@ExperimentalCoilApi
 @Composable
 fun Post(
     post: Post,// we just send whole post for now  , but later post id
@@ -65,8 +67,13 @@ fun Post(
 
         ) {
             Image(
-                painterResource(id = R.drawable.sample),
-                contentDescription = "Post Image"
+                painter = rememberImagePainter(
+                    data = post.imageUrl,
+                    builder = {
+                        crossfade(true)
+                    }
+                ),
+               contentDescription = "Post Image"
             )
             Column(
                 modifier = Modifier
@@ -145,10 +152,15 @@ fun Post(
         if (showProfileImage) {
             //Compose rule ->  Last drawing is on top
             Image(
-                painterResource(id = R.drawable.enes),
+                rememberImagePainter(
+                    data = post.profilePictureUrl,
+                    builder = {
+                        crossfade(true)
+                    }
+                ),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
-                      .size(ProfilePictureSizeMedium)
+                    .size(ProfilePictureSizeMedium)
                     .clip(CircleShape) // making photo circle
                     .align(Alignment.TopCenter)
             )

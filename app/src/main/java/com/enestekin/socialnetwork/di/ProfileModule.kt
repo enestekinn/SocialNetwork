@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.di
 
+import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
 import com.enestekin.socialnetwork.feature_profile.data.remote.ProfileApi
 import com.enestekin.socialnetwork.feature_profile.data.repository.ProfileRepositoryImpl
 import com.enestekin.socialnetwork.feature_profile.domain.repository.ProfileRepository
@@ -32,8 +33,8 @@ object ProfileModule {
 
     @Provides
     @Singleton
-    fun profileRepository(api: ProfileApi,gson: Gson): ProfileRepository {
-        return ProfileRepositoryImpl(api, gson)
+    fun profileRepository(profileApi: ProfileApi, postApi: PostApi, gson: Gson): ProfileRepository {
+        return ProfileRepositoryImpl(profileApi,postApi, gson)
     }
 
     @Provides
@@ -43,7 +44,8 @@ object ProfileModule {
             getProfile = GetProfileUseCase(repository),
             getSkills = GetSkillsUseCase(repository),
             updateProfile = UpdateProfileUseCase(repository),
-        setSkillSelected = SetSkillSelectedUseCase()
+        setSkillSelected = SetSkillSelectedUseCase(),
+            getPostsForProfile = GetPostsForProfileUseCase(repository)
         )
     }
 }

@@ -24,6 +24,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             when(authenticateUserCase()){
                 is Resource.Success -> {
+                    println("SplashViewModel Resource Success")
                     _eventFlow.emit(
                         UiEvent.Navigate(Screen.MainFeedScreen.route)
                     )
