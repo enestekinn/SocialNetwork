@@ -71,9 +71,9 @@ fun SearchScreen(
                 items(10) {
                     UserProfileItem(
                         user = User(
-                            userId ="" ,
+                            userId ="61b86b215f99d65d5a903abc1" ,
                             profilePictureUrl = "",
-                            username = "Enes Tekin",
+                            username = " Tekin",
                             description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
                                     "diam nonumy eirmod tempor invidunt ut labore et dolore \n" +
                                     "magna aliquyam erat, sed diam voluptua",
@@ -91,7 +91,7 @@ fun SearchScreen(
                         },
                         onItemClick = {
                          onNavigate(
-                             Screen.ProfileScreen.route + "?userId="
+                             Screen.ProfileScreen.route + "?userId=61b86b215f99d65d5a903abc1"
                          )
                         }
                     )

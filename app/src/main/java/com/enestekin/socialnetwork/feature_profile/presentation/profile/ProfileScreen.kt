@@ -49,10 +49,10 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
-    userId: String,
+    scaffoldState: ScaffoldState,
+    userId: String? = null,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
-    scaffoldState: ScaffoldState,
     profilePictureSize: Dp = ProfilePictureSizeLarge,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -102,7 +102,8 @@ fun ProfileScreen(
     }
     val context = LocalContext.current
     LaunchedEffect(key1 = true){
-        viewModel.getProfile(userId)
+        println("Profile Screen userId: $userId")
+        viewModel.getProfile("61b86b215f99d65d5a903af7")
         viewModel.eventFlow.collectLatest { event ->
             when(event){
                 is UiEvent.ShowSnackbar -> {
@@ -115,6 +116,8 @@ fun ProfileScreen(
 
         }
     }
+
+
 
     Box(
         modifier = Modifier
@@ -132,6 +135,7 @@ fun ProfileScreen(
                 ))
             }
             item {
+                println("Profile Screen : ${state.profile}")
                 state.profile?.let { profile ->
                     ProfileHeaderSection(
                         user = User(
@@ -172,13 +176,14 @@ fun ProfileScreen(
                 )
             }
         }
-        
-        
+
+
         Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
         ) {
 
+            println("186 : ${state.profile?.userId}")
 
             state.profile?.let { profile ->
 
@@ -206,9 +211,9 @@ fun ProfileScreen(
                                 -iconHorizontalCenterLength
                     },
                 topSkill = profile.topSkills,
-                shouldShowGitHub = profile.gitHubUrl != null && profile.gitHubUrl.isBlank(),
-                shouldShowInstagram = profile.instagramUrl != null && profile.instagramUrl.isBlank(),
-                shouldShowLinkedIn = profile.linkedInUrl != null && profile.linkedInUrl.isBlank(),
+                shouldShowGitHub = profile.gitHubUrl != null && profile.gitHubUrl.isNotBlank(),
+                shouldShowInstagram = profile.instagramUrl != null && profile.instagramUrl.isNotBlank(),
+                shouldShowLinkedIn = profile.linkedInUrl != null && profile.linkedInUrl.isNotBlank(),
                 bannerUrl =  profile.bannerUrl
             )
 

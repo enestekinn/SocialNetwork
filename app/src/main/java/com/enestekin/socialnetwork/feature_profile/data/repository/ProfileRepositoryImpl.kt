@@ -32,11 +32,8 @@ class ProfileRepositoryImpl(
 ) : ProfileRepository {
     override suspend fun getProfile(userId: String): Resource<Profile> {
 
-        println("getProfile:$userId   ProfileRepositoryImpl")
         return try {
         val response = profileApi.getProfile(userId)
-
-            println("getProfile:${response.successful}   ProfileRepositoryImpl")
 
 
             if (response.successful) {

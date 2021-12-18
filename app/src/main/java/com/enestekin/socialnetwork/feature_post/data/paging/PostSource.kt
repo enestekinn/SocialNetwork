@@ -18,6 +18,7 @@ class PostSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
         return try {
             val nextPage = params.key ?: currentPage
+            println("PostSource nextPage: $nextPage")
             val posts = when(source){
                 is Source.Follows -> {
                     api.getPostsForFollows(
@@ -26,6 +27,7 @@ class PostSource(
                     )
                 }
                 is Source.Profile -> {
+                    println("Calisti")
                    api.getPostsForProfile(
                        userId = source.userId,
                        page = nextPage,

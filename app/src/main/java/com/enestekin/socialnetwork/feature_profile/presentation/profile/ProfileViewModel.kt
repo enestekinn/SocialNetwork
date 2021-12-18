@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.enestekin.socialnetwork.core.domain.use_case.GetOwnUserIdUseCase
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.UiText
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
 private val profileUseCases: ProfileUseCases,
+private val getOwnUserId: GetOwnUserIdUseCase,
 savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -34,8 +36,9 @@ savedStateHandle: SavedStateHandle
 
 
     val posts = profileUseCases.getPostsForProfile(
-        userId = savedStateHandle.get<String>("userId") ?: ""
+        userId = savedStateHandle.get<String>("userId") ?: getOwnUserId()
     ).cachedIn(viewModelScope)
+
 
 
 
@@ -61,13 +64,15 @@ savedStateHandle: SavedStateHandle
     }
 
 
-     fun getProfile(userId: String){
+     fun getProfile(userId: String?){
+         println("ProfileViewModel getProfile $userId")
         viewModelScope.launch {
             _state.value = state.value.copy(
                 isLoading = true
             )
-            val  result = profileUseCases.getProfile(userId)
-            println(result.data?.gitHubUrl)
+            val  result = profileUseCases.getProfile(
+                userId ?: getOwnUserId()
+            )
             when(result){
                 is Resource.Success -> {
                     _state.value = state.value.copy(

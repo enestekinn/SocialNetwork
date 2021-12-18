@@ -2,6 +2,7 @@ package com.enestekin.socialnetwork.feature_auth.data.repository
 
 import android.content.SharedPreferences
 import com.enestekin.socialnetwork.R
+import com.enestekin.socialnetwork.core.util.Constants
 import com.enestekin.socialnetwork.core.util.Constants.KEY_JWT_TOKEN
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
@@ -28,7 +29,6 @@ class AuthRepositoryImpl(
         return try {
             val response = api.register(request)
 
-            println(response.successful)
             if (response.successful) {
                 Resource.Success(Unit)
             } else {
@@ -53,10 +53,11 @@ class AuthRepositoryImpl(
         return try {
             val response = api.login(request)
             if (response.successful) {
-                response.data?.token?.let { token ->
+                response.data?.let { authResponse ->
 
                     sharedPreferences.edit()
-                        .putString(KEY_JWT_TOKEN, token)
+                        .putString(KEY_JWT_TOKEN, authResponse.token)
+                        .putString(Constants.KEY_USER_ID,authResponse.userId)
                         .apply()
                 }
                 Resource.Success(Unit)
@@ -81,6 +82,10 @@ class AuthRepositoryImpl(
 
         return try {
             api.authenticate()
+
+
+
+
 
             Resource.Success(Unit)
         } catch (e: IOException) {
