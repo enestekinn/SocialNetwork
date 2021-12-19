@@ -3,6 +3,7 @@ package com.enestekin.socialnetwork.feature_profile.domain.repository
 import android.net.Uri
 import androidx.paging.PagingData
 import com.enestekin.socialnetwork.core.domain.models.Post
+import com.enestekin.socialnetwork.core.domain.models.UserItem
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.feature_profile.domain.model.Profile
@@ -11,8 +12,6 @@ import com.enestekin.socialnetwork.feature_profile.domain.model.UpdateProfileDat
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
-
-
 
 
     fun getPostsPaged(userId: String): Flow<PagingData<Post>>
@@ -29,4 +28,10 @@ interface ProfileRepository {
     ): SimpleResource
 
     suspend fun getSkills(): Resource<List<Skill>>
+
+    suspend fun searchUser(query: String): Resource<List<UserItem>>
+
+    suspend fun followUser(userId: String): SimpleResource
+
+    suspend fun unfollowUser(userId: String): SimpleResource
 }

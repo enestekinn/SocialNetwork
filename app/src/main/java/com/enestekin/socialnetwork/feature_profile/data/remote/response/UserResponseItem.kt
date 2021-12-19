@@ -1,6 +1,6 @@
 package com.enestekin.socialnetwork.feature_profile.data.remote.response
 
-import com.enestekin.socialnetwork.feature_profile.domain.model.UserItem
+import com.enestekin.socialnetwork.core.domain.data.dto.response.UserItemDto
 
 
 data class UserResponseItem(
@@ -10,8 +10,8 @@ data class UserResponseItem(
     val bio: String,
     val isFollowing: Boolean
 ){
-    fun toUserItem(): UserItem {
-        return UserItem(
+    fun toUserItem(): UserItemDto {
+        return UserItemDto(
             userId = userId,
             username = username,
             profilePictureUrl = profilePictureUrl,

@@ -147,6 +147,7 @@ fun ProfileScreen(
                             followingCount = profile.followingCount,
                             postCount = profile.postCount
                         ),
+                        isFollowing = profile.isFollowing,
                         isOwnProfile = profile.isOwnProfile,
                         onEditClick = {
                            onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}")

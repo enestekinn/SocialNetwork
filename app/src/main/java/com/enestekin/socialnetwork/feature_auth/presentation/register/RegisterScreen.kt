@@ -27,10 +27,11 @@ import com.enestekin.socialnetwork.core.util.Constants.MIN_USERNAME_LENGTH
 import com.enestekin.socialnetwork.feature_auth.presentation.util.AuthError
 import kotlinx.coroutines.flow.collectLatest
 
+
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    scaffoldState:  ScaffoldState,
+    scaffoldState: ScaffoldState,
     viewModel: RegisterViewModel = hiltViewModel() //this is how  viewModel initialize by dagger-hilt
 ) {
     val usernameState = viewModel.usernameState.value

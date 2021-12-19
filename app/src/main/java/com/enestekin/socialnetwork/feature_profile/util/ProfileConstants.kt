@@ -11,4 +11,5 @@ object ProfileConstants {
 
     const val SEARCH_DELAY = 700L
 
+
 }

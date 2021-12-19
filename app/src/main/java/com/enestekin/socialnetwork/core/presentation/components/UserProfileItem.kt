@@ -8,11 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.enestekin.socialnetwork.R
+import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.core.domain.models.User
 import com.enestekin.socialnetwork.core.presentation.ui.theme.IconSizeMedium
 import com.enestekin.socialnetwork.core.presentation.ui.theme.ProfilePictureSizeSmall
@@ -45,7 +44,12 @@ fun UserProfileItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.enes),
+                painter = rememberImagePainter(
+                    data = user.profilePictureUrl,
+                    builder = {
+                        crossfade(true)
+                    }
+                ),
                 contentDescription = null,
                 modifier = Modifier
                     .size(ProfilePictureSizeSmall)
