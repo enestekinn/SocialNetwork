@@ -103,9 +103,6 @@ fun BannerSection(
                 .align(Alignment.BottomEnd)
                 .padding(SpaceSmall)
         ) {
-            println("shouldShowGitHub: $shouldShowGitHub")
-            println("shouldShowInstagram:$shouldShowInstagram")
-            println("shouldShowLinkedIn: $shouldShowLinkedIn")
 if (shouldShowGitHub){
 
             IconButton(

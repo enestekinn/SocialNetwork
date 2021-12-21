@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.Comment
-import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.presentation.components.ActionRow
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.presentation.ui.theme.*
@@ -30,123 +31,130 @@ import com.enestekin.socialnetwork.core.presentation.ui.theme.*
 fun PostDetailScreen(
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
-    post: Post,
+    viewModel: PostDetailViewModel = hiltViewModel()
 ) {
-Column(
-    modifier = Modifier.fillMaxSize()
-) {
-    StandardToolbar(
-        onNavigateUp = onNavigateUp,
-        title = {
-            Text(
-                text = stringResource(id = R.string.your_feed),
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onBackground
-            )
-        },
 
-        modifier = Modifier.fillMaxWidth(),
-        showBackArrow = true,
-
-        )
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.surface)
+    val state = viewModel.state.value
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colors.background)
+        StandardToolbar(
+            onNavigateUp = onNavigateUp,
+            title = {
+                Text(
+                    text = stringResource(id = R.string.your_feed),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
+                )
+            },
 
-            ) {
-                Spacer(modifier = Modifier.height(SpaceLarge))
-                Box(
+            modifier = Modifier.fillMaxWidth(),
+            showBackArrow = true,
+
+            )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.surface)
+        ) {
+            item {
+                Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                ) {
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.background)
 
-                    Column(
+                ) {
+                    Spacer(modifier = Modifier.height(SpaceLarge))
+                    Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .offset(y = ProfilePictureSizeMedium / 2f)
-                            .clip(MaterialTheme.shapes.medium)
-                            .shadow(5.dp)
-                            .background(MediumGray)
                     ) {
-                        Image(
-                            painterResource(id = R.drawable.sample),
-                            contentDescription = "Post Picture",
-                            modifier = Modifier.fillMaxWidth()
-
-                        )
 
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(SpaceLarge)
-
+                                .fillMaxSize()
+                                .offset(y = ProfilePictureSizeMedium / 2f)
+                                .clip(MaterialTheme.shapes.medium)
+                                .shadow(5.dp)
+                                .background(MediumGray)
                         ) {
-                            ActionRow(
-                                username = "Enes Tekin",
-                                modifier = Modifier.fillMaxWidth(),
-                                onLikeClick = { isLiked ->
-
-                                },
-                                onCommentClick = {
-
-                                },
-                                onSharedClick = {
-
-                                },
-                                onUsernameClick = { username ->
-
-                                }
-                            )
-                            Spacer(modifier = Modifier.height(SpaceSmall))
-
-                            Text(
-                                text = post.description,
-                                style = MaterialTheme.typography.body2,
-                            )
-
-                            Spacer(modifier = Modifier.height(SpaceMedium))
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-
-
-                                Text(
-                                    text = stringResource(
-                                        id = R.string.x_likes,
-                                        post.likeCount
+                            state.post?.let { post ->
+                                Image(
+                                    painter = rememberImagePainter(
+                                        data = state.post.imageUrl,
+                                        builder = {
+                                            crossfade(true)
+                                        }
                                     ),
-                                    fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.body2
+                                    contentDescription = "Post Picture",
+                                    modifier = Modifier.fillMaxWidth()
                                 )
 
+
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(SpaceLarge)
+
+                                ) {
+                                    ActionRow(
+                                        username = "Enes Tekin",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onLikeClick = { isLiked ->
+
+                                        },
+                                        onCommentClick = {
+
+                                        },
+                                        onSharedClick = {
+
+                                        },
+                                        onUsernameClick = { username ->
+
+                                        }
+                                    )
+                                    Spacer(modifier = Modifier.height(SpaceSmall))
+
+                                    Text(
+                                        text = state.post.description,
+                                        style = MaterialTheme.typography.body2,
+                                    )
+
+                                    Spacer(modifier = Modifier.height(SpaceMedium))
+                                    Text(
+                                        text = stringResource(
+                                            id = R.string.liked_by,
+                                            post.likeCount
+                                        ),
+                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.body2
+                                    )
+                                }
                             }
-
-
                         }
-                    }
-                    Image(
-                        painterResource(id = R.drawable.enes),
-                        contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .size(ProfilePictureSizeMedium)
-                            .clip(CircleShape) // making photo circle
-                            .align(Alignment.TopCenter)
-                    )
-
+                        Image(
+                            painter = rememberImagePainter(
+                                data = state.post?.profilePictureUrl,
+                                builder = {
+                                    crossfade(true)
+                                }
+                            ),
+                            contentDescription = "Profile picture",
+                            modifier = Modifier
+                                .size(ProfilePictureSizeMedium)
+                                .clip(CircleShape)
+                                .align(Alignment.TopCenter)
+                        )
+                        if (state.isLoadingPost) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(SpaceLarge))
             }
-            items(20) {
+            items(state.comments) { comment ->
                 Comment(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -154,13 +162,11 @@ Column(
                             horizontal = SpaceLarge,
                             vertical = SpaceSmall
                         ),
-                    comment = Comment(
-                        username = "Philipp Lackner$it",
-                        comment = "Lorem ipsum dolor sit amet, consetetur, asdfadsf\nLorem ipsum dolor sit amet, consetetur, asdfadsf\nLorem ipsum dolor sit amet, consetetur, asdfadsf\nLorem ipsum dolor sit amet, consetetur, asdfadsf\nLorem ipsum dolor sit amet, consetetur, asdfadsf\nLorem ipsum dolor sit amet, consetetur, asdfadsf\n"
-                    )
+                    comment = comment
                 )
             }
         }
+
     }
 
 
@@ -169,7 +175,7 @@ Column(
 @Composable
 fun Comment(
     modifier: Modifier = Modifier,
-    comment: Comment = Comment(),
+    comment: Comment,
     onLikeClick: (Boolean) -> Unit = {}
 ) {
 
@@ -185,7 +191,7 @@ fun Comment(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(SpaceSmall)
+                .padding(SpaceMedium)
         ) {
             Row(
                 modifier = Modifier
@@ -193,10 +199,15 @@ fun Comment(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    verticalAlignment =  Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.enes),
+                        painter = rememberImagePainter(
+                            data = comment.profilePictureUrl,
+                            builder = {
+                                crossfade(true)
+                            }
+                        ),
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
@@ -206,20 +217,16 @@ fun Comment(
                     Text(
                         text = comment.username,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.onBackground
-
                     )
-
                 }
                 Text(
-                    text = "2 days ago",
-                style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onBackground
+                    text = comment.formattedTime,
+                    style = MaterialTheme.typography.body2
                 )
-
             }
-            Spacer(modifier = Modifier.height(SpaceSmall))
+            Spacer(modifier = Modifier.height(SpaceMedium))
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -231,21 +238,25 @@ fun Comment(
 
                 )
                 Spacer(modifier = Modifier.width(SpaceMedium))
-                IconButton(onClick = {
-                    onLikeClick(comment.isLiked)
-                },
+                IconButton(
+                    onClick = {
+                        onLikeClick(comment.isLiked)
+                    },
                     modifier = Modifier.weight(1f)
                 ) {
 
                     Icon(
                         imageVector = Icons.Default.Favorite,
+                        tint = if (comment.isLiked) {
+                            MaterialTheme.colors.primary
+                        } else MaterialTheme.colors.onBackground,
                         contentDescription = if (comment.isLiked) {
                             stringResource(id = R.string.unlike)
                         } else stringResource(id = R.string.like)
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(SpaceSmall))
+            Spacer(modifier = Modifier.height(SpaceMedium))
             Text(
                 text = stringResource(id = R.string.liked_by, comment.likeCount),
                 fontWeight = FontWeight.Bold,

@@ -1,4 +1,4 @@
-package com.enestekin.socialnetwork.core.util
+package com.enestekin.socialnetwork.core.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
@@ -10,7 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
-import com.enestekin.socialnetwork.core.domain.models.Post
+import com.enestekin.socialnetwork.core.util.Screen
 import com.enestekin.socialnetwork.feature_activity.presentation.ActivityScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.login.LoginScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.register.RegisterScreen
@@ -34,7 +34,7 @@ fun Navigation(
     NavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route,
-    modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
 
         composable(Screen.SplashScreen.route) {
@@ -76,7 +76,7 @@ fun Navigation(
                 onNavigate = navController::navigate,
             )
         }
-       composable(
+        composable(
             route = Screen.ProfileScreen.route + "?userId={userId}",
             arguments = listOf(
                 navArgument(name = "userId") {
@@ -95,12 +95,11 @@ fun Navigation(
 
         }
         //optional userId
-        composable(Screen.EditProfileScreen.route + "/{userId}",
+        composable(
+            Screen.EditProfileScreen.route + "/{userId}",
             arguments = listOf(
                 navArgument(name = "userId") {
                     type = NavType.StringType
-                    nullable = true
-                    defaultValue = null
                 }
             )
         ) {
@@ -124,27 +123,28 @@ fun Navigation(
                 onNavigate = navController::navigate,
             )
         }
-        composable(Screen.PostDetailScreen.route) {
+        composable(
+            route = Screen.PostDetailScreen.route + "/{postId}",
+            arguments = listOf(
+                navArgument(
+                    name = "postId"
+                ) {
+                    type = NavType.StringType
+                }
+
+            )
+        ) {
             PostDetailScreen(
                 onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate,
-                post = Post(
-                    username = "enestekin",
-                    imageUrl = "",
-                    profilePictureUrl = "",
-                    description = "Lorem  Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı bili nmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyen \n" +
-                            "Lorem  Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı bili nmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyenbilinmeyen",
-                    likeCount = 17,
-                    commentCount = 7
-                ),
-
-                )
+                onNavigate = navController::navigate
+            )
         }
+
         composable(Screen.PersonListScreen.route) {
             PersonListScreen(
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
-         )
+            )
         }
     }
 }

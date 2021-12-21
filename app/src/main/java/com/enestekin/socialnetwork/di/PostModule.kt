@@ -3,9 +3,7 @@ package com.enestekin.socialnetwork.di
 import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
 import com.enestekin.socialnetwork.feature_post.data.repository.PostRepositoryImpl
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
-import com.enestekin.socialnetwork.feature_post.domain.use_case.CreatePostUseCase
-import com.enestekin.socialnetwork.feature_post.domain.use_case.GetPostsForFollowsUseCase
-import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
+import com.enestekin.socialnetwork.feature_post.domain.use_case.*
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -46,7 +44,9 @@ object PostModule {
     fun providePostUseCases(repository: PostRepository): PostUseCases {
         return PostUseCases(
             getPostsForFollowsUserCase = GetPostsForFollowsUseCase(repository),
-            createPostUseCase = CreatePostUseCase(repository)
+            createPostUseCase = CreatePostUseCase(repository),
+            getPostDetails = GetPostDetailUseCase(repository),
+            getCommentsForPost = GetCommentsForPostUseCase(repository)
         )
     }
 }

@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
+import com.enestekin.socialnetwork.core.domain.models.Comment
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.util.Constants
 import com.enestekin.socialnetwork.core.util.Resource
@@ -75,4 +76,54 @@ class PostRepositoryImpl(
             )
         }
     }
-}
+
+    override suspend fun getPostDetails(postId: String): Resource<Post> {
+        return try {
+            val response = api.getPostDetails(postId = postId)
+            if (response.successful){
+                Resource.Success(response.data)
+
+
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
+
+            }
+            } catch (e: IOException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
+            )
+
+        }  catch (e: HttpException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> {
+        return try {
+            val comments = api.getCommentsForPost(postId = postId).map {
+
+                it.toComment()
+            }
+            Resource.Success(comments)
+
+        } catch (e: IOException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
+            )
+
+        }  catch (e: HttpException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
+            )
+        }
+
+    }
+
+
+    }
+
+

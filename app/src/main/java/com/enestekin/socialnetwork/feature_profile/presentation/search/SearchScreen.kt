@@ -70,7 +70,6 @@ fun SearchScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    println("UserItems: ${state.userItems.size}")
                     items(state.userItems) { user ->
                         UserProfileItem(
                             user = User(

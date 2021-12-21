@@ -65,7 +65,6 @@ savedStateHandle: SavedStateHandle
 
 
      fun getProfile(userId: String?){
-         println("ProfileViewModel getProfile $userId")
         viewModelScope.launch {
             _state.value = state.value.copy(
                 isLoading = true

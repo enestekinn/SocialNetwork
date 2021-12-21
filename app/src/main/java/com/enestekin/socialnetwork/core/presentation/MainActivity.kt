@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.enestekin.socialnetwork.core.presentation.components.Navigation
 import com.enestekin.socialnetwork.core.presentation.components.StandardScaffold
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SocialNetworkTheme
-import com.enestekin.socialnetwork.core.util.Navigation
 import com.enestekin.socialnetwork.core.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -65,8 +65,6 @@ class MainActivity : ComponentActivity() {
 
         val isOwnProfile = backStackEntry?.destination?.route == "${Screen.ProfileScreen.route}?userId={userId}" &&
         backStackEntry.arguments?.getString("userId") == null
-        println("isOwnProfile $isOwnProfile")
-        println("doesRouteMatch $isOwnProfile")
 
 
         return doesRouteMatch || isOwnProfile

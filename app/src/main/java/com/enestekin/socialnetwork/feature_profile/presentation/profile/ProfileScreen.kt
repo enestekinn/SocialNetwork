@@ -102,7 +102,6 @@ fun ProfileScreen(
     }
     val context = LocalContext.current
     LaunchedEffect(key1 = true){
-        println("Profile Screen userId: $userId")
         viewModel.getProfile("61b86b215f99d65d5a903af7")
         viewModel.eventFlow.collectLatest { event ->
             when(event){
@@ -135,7 +134,6 @@ fun ProfileScreen(
                 ))
             }
             item {
-                println("Profile Screen : ${state.profile}")
                 state.profile?.let { profile ->
                     ProfileHeaderSection(
                         user = User(
@@ -163,6 +161,7 @@ fun ProfileScreen(
                 )
                 Post(
                     post = Post(
+                        id = post?.id ?: "",
                         username = post?.username ?: "",
                         imageUrl = post?.imageUrl ?: "",
                         profilePictureUrl = post?.profilePictureUrl ?: "",
@@ -172,7 +171,7 @@ fun ProfileScreen(
                     ),
                     showProfileImage = false,
                     onPostClicked = {
-                       onNavigate(Screen.PostDetailScreen.route)
+                       onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
                     },
                 )
             }
@@ -184,7 +183,6 @@ fun ProfileScreen(
                 .align(Alignment.TopCenter)
         ) {
 
-            println("186 : ${state.profile?.userId}")
 
             state.profile?.let { profile ->
 

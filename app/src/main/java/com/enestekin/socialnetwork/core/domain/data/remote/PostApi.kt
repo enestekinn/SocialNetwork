@@ -2,10 +2,12 @@ package com.enestekin.socialnetwork.core.domain.data.remote
 
 import com.enestekin.socialnetwork.core.domain.data.dto.response.BasicApiResponse
 import com.enestekin.socialnetwork.core.domain.models.Post
+import com.enestekin.socialnetwork.feature_post.data.remote.dto.CommentDto
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
-interface PostApi {
+interface
+PostApi {
 
     @GET("/api/post/get/")
     suspend fun getPostsForFollows(
@@ -28,9 +30,20 @@ interface PostApi {
         @Part postImage: MultipartBody.Part,
     ): BasicApiResponse<Unit>
 
+    @GET("/api/post/details")
+    suspend fun getPostDetails(
+        @Query("postId") postId: String
+    ): BasicApiResponse<Post>
+
+
+    @GET("/api/comment/get")
+    suspend fun getCommentsForPost(
+        @Query("postId") postId: String
+    ): List<CommentDto>
+
     companion object {
         //const val BASE_URL = "http://192.168.0.102:8001/"
-        const val BASE_URL = "http://192.168.1.9:8001/"
+        const val BASE_URL = "http://192.168.1.3:8001/"
       //  const val BASE_URL = "http://10.0.2.2:8001/"
 
 

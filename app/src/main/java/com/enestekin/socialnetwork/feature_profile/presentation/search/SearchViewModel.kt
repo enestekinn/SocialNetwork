@@ -98,14 +98,12 @@ private var searchJob: Job? = null
                 isLoading = true
             )
             val result = profileUseCases.searchUser(query)
-            println("SearchViewModel: ${result.data?.size}")
             when(result){
                 is Resource.Success -> {
                     _searchState.value = searchState.value.copy(
                         userItems = result.data ?: emptyList(),
                         isLoading = false
                     )
-                    println("SearchViewModel: ${_searchState.value.userItems.size}")
 
                 }
                 is Resource.Error -> {

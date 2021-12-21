@@ -74,18 +74,19 @@ fun MainFeedScreen(
             }
             LazyColumn {
 
-                items(posts){ posts ->
+                items(posts){ post ->
                     Post(
                         post = com.enestekin.socialnetwork.core.domain.models.Post(
-                            username = posts?.username ?: "",
-                            imageUrl = posts?.imageUrl ?: "",
-                            profilePictureUrl = posts?.profilePictureUrl ?: "",
-                            description = posts?.description ?: "",
-                            likeCount = posts?.likeCount ?: 0,
-                            commentCount = posts?.commentCount ?: 0
+                            id = post?.id ?: "",
+                            username = post?.username ?: "",
+                            imageUrl = post?.imageUrl ?: "",
+                            profilePictureUrl = post?.profilePictureUrl ?: "",
+                            description = post?.description ?: "",
+                            likeCount = post?.likeCount ?: 0,
+                            commentCount = post?.commentCount ?: 0
                         ),
                         onPostClicked = {
-                            onNavigate(Screen.PostDetailScreen.route)
+                            onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
                         }
                     )
                 }
