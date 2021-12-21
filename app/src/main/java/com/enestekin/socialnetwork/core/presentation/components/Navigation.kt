@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import com.enestekin.socialnetwork.core.domain.models.Post
-import com.enestekin.socialnetwork.feature_activity.presentation.activity.ActivityScreen
+import com.enestekin.socialnetwork.feature_activity.presentation.ActivityScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.login.LoginScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.register.RegisterScreen
 import com.enestekin.socialnetwork.feature_chat.presentation.ChatScreen
