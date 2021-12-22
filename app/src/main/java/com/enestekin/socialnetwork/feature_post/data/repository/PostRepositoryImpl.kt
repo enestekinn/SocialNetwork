@@ -16,6 +16,7 @@ import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_post.data.paging.PostSource
 import com.enestekin.socialnetwork.feature_post.data.remote.request.CreateCommentRequest
 import com.enestekin.socialnetwork.feature_post.data.remote.request.CreatePostRequest
+import com.enestekin.socialnetwork.feature_post.data.remote.request.LikeUpdateRequest
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
@@ -154,6 +155,64 @@ class PostRepositoryImpl(
             )
         }
     }
+
+    override suspend fun likeParent(parentId: String, parentType: Int): SimpleResource {
+        return try {
+            val response = api.likeParent(
+                LikeUpdateRequest(
+                    parentId = parentId,
+                    parentType = parentType
+                )
+            )
+
+            if (response.successful){
+                Resource.Success(response.data)
+
+
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
+
+            }
+        } catch (e: IOException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
+            )
+
+        }  catch (e: HttpException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
+            )
+        }    }
+
+    override suspend fun unLikeParent(parentId: String, parentType: Int): SimpleResource {
+        return try {
+            val response = api.unlikeParent(
+            parentId = parentId,
+                parentType = parentType
+            )
+
+            if (response.successful){
+                Resource.Success(response.data)
+
+
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.error_unknown))
+
+            }
+        } catch (e: IOException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
+            )
+
+        }  catch (e: HttpException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
+            )
+        }    }
 
 
 }

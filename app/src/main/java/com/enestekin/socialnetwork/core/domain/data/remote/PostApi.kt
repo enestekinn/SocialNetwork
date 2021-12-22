@@ -4,6 +4,7 @@ import com.enestekin.socialnetwork.core.domain.data.dto.response.BasicApiRespons
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.feature_post.data.remote.dto.CommentDto
 import com.enestekin.socialnetwork.feature_post.data.remote.request.CreateCommentRequest
+import com.enestekin.socialnetwork.feature_post.data.remote.request.LikeUpdateRequest
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -45,6 +46,17 @@ PostApi {
     @POST("/api/comment/create")
     suspend fun createComment(
         @Body request: CreateCommentRequest
+    ): BasicApiResponse<Unit>
+
+    @POST("/api/like")
+    suspend fun likeParent(
+        @Body request: LikeUpdateRequest
+    ): BasicApiResponse<Unit>
+
+    @DELETE("/api/unlike")
+    suspend fun unlikeParent(
+        @Query ("parentId") parentId: String,
+        @Query ("parentType") parentType: Int
     ): BasicApiResponse<Unit>
 
     companion object {

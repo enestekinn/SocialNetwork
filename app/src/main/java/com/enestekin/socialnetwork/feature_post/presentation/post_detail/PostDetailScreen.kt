@@ -120,10 +120,10 @@ scaffoldState.snackbarHostState.showSnackbar(
 
                                 ) {
                                     ActionRow(
-                                        username = "Enes Tekin",
+                                        username = state.post.username,
                                         modifier = Modifier.fillMaxWidth(),
-                                        onLikeClick = { isLiked ->
-
+                                        onLikeClick = {
+                                            viewModel.onEvent(PostDetailEvent.LikedPost)
                                         },
                                         onCommentClick = {
 
@@ -131,9 +131,10 @@ scaffoldState.snackbarHostState.showSnackbar(
                                         onSharedClick = {
 
                                         },
-                                        onUsernameClick = { username ->
+                                        onUsernameClick = {
 
-                                        }
+                                        },
+                                        isLiked = state.post.isLiked
                                     )
                                     Spacer(modifier = Modifier.height(SpaceSmall))
 
@@ -184,7 +185,11 @@ scaffoldState.snackbarHostState.showSnackbar(
                             horizontal = SpaceLarge,
                             vertical = SpaceSmall
                         ),
-                    comment = comment
+                    comment = comment,
+                    onLikeClick ={
+
+                    viewModel.onEvent(PostDetailEvent.LikeComment(comment.id))
+                    }
                 )
             }
         }

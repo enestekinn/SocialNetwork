@@ -78,6 +78,8 @@ fun MainFeedScreen(
                     Post(
                         post = com.enestekin.socialnetwork.core.domain.models.Post(
                             id = post?.id ?: "",
+                            userId = post?.userId ?: "",
+                            isLiked = post?.isLiked ?: false,
                             username = post?.username ?: "",
                             imageUrl = post?.imageUrl ?: "",
                             profilePictureUrl = post?.profilePictureUrl ?: "",

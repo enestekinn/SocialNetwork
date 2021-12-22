@@ -47,7 +47,8 @@ object PostModule {
             createPostUseCase = CreatePostUseCase(repository),
             getPostDetails = GetPostDetailUseCase(repository),
             getCommentsForPost = GetCommentsForPostUseCase(repository),
-            createComment = CreateCommentUseCase(repository)
+            createComment = CreateCommentUseCase(repository),
+            toggleLikeForParent = ToggleLikeForParentUseCase(repository)
         )
     }
 }
