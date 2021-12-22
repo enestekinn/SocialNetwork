@@ -102,7 +102,7 @@ fun ProfileScreen(
     }
     val context = LocalContext.current
     LaunchedEffect(key1 = true){
-        viewModel.getProfile("61b86b215f99d65d5a903af7")
+        viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when(event){
                 is UiEvent.ShowSnackbar -> {

@@ -5,11 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enestekin.socialnetwork.R
+import com.enestekin.socialnetwork.core.domain.states.StandardTextFieldState
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
+import com.enestekin.socialnetwork.feature_post.presentation.util.CommentError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -18,30 +22,40 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
     private val postUseCases: PostUseCases,
-    savedStateHandle: SavedStateHandle
-): ViewModel() {
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-        private val _state = mutableStateOf(PostDetailState())
-        val state: State<PostDetailState> = _state
+    private val _state = mutableStateOf(PostDetailState())
+    val state: State<PostDetailState> = _state
+    private val _commentTextFieldState =
+        mutableStateOf(StandardTextFieldState(error = CommentError.FieldEmpty))
+    val commentTextFieldState: State<StandardTextFieldState> = _commentTextFieldState
+
+    private val _commentState = mutableStateOf(CommentState())
+    val commentState: State<CommentState> = _commentState
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
         savedStateHandle.get<String>("postId")?.let { postId ->
-        loadPostDetails(postId)
+            loadPostDetails(postId)
             loadCommentsForPost(postId)
 
         }
     }
 
-    fun onEvent(event: PostDetailEvent){
-        when(event){
+    fun onEvent(event: PostDetailEvent) {
+        when (event) {
             is PostDetailEvent.LikedPost -> {
 
             }
             is PostDetailEvent.Comment -> {
+        createComment(
+            postId = savedStateHandle.get<String>("postId") ?: "",
+            comment =  commentTextFieldState.value.text
 
+        )
             }
             is PostDetailEvent.LikeComment -> {
 
@@ -49,17 +63,66 @@ class PostDetailViewModel @Inject constructor(
             is PostDetailEvent.SharePost -> {
 
             }
+            is PostDetailEvent.EnteredComment -> {
+                _commentTextFieldState.value = commentTextFieldState.value.copy(
+                    text = event.comment,
+                    error = if (event.comment.isBlank()) CommentError.FieldEmpty else null
+                )
+            }
         }
     }
 
-    private fun loadPostDetails(postId: String){
+    private fun createComment(postId: String, comment: String) {
+        viewModelScope.launch {
+
+            _commentState.value = commentState.value.copy(
+                isLoading = true
+            )
+            delay(3000)
+            val result = postUseCases.createComment(
+                postId = postId,
+                comment = comment
+            )
+            when (result) {
+                is Resource.Success -> {
+                    _eventFlow.emit(
+                        UiEvent.ShowSnackbar(
+                            uiText = UiText.StringResource(R.string.comment_posted)
+                        )
+                    )
+                    _commentState.value = commentState.value.copy(
+                        isLoading = false
+                    )
+                    _commentTextFieldState.value = commentTextFieldState.value.copy(
+                        text = "",
+                        error = CommentError.FieldEmpty
+                    )
+                    loadCommentsForPost(postId)
+                }
+                is Resource.Error -> {
+                    _eventFlow.emit(
+                        UiEvent.ShowSnackbar(
+                            uiText = result.uiText ?: UiText.unknownError()
+                        )
+                    )
+                    _commentState.value = commentState.value.copy(
+                        isLoading = false
+                    )
+
+                }
+            }
+
+        }
+    }
+
+    private fun loadPostDetails(postId: String) {
         viewModelScope.launch {
 
             _state.value = state.value.copy(
                 isLoadingPost = true
             )
             val result = postUseCases.getPostDetails(postId)
-            when(result){
+            when (result) {
                 is Resource.Success -> {
                     _state.value = state.value.copy(
                         post = result.data,
@@ -83,13 +146,14 @@ class PostDetailViewModel @Inject constructor(
             }
         }
     }
-    private fun loadCommentsForPost(postId: String){
+
+    private fun loadCommentsForPost(postId: String) {
         viewModelScope.launch {
             _state.value = state.value.copy(
                 isLoadingComments = true
             )
             val result = postUseCases.getCommentsForPost(postId)
-            when(result){
+            when (result) {
                 is Resource.Success -> {
                     _state.value = state.value.copy(
                         comments = result.data ?: emptyList(),

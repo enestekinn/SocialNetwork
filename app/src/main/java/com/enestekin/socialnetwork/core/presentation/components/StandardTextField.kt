@@ -35,6 +35,7 @@ fun StandardTextField(
     style: TextStyle = TextStyle(
         color = MaterialTheme.colors.onBackground
     ),
+    backgroundColor: Color = MaterialTheme.colors.surface,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     leadingIcon: ImageVector? = null,
@@ -59,6 +60,9 @@ fun StandardTextField(
             },
             maxLines = maxLines,
             textStyle = style,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = backgroundColor
+            ),
             placeholder = {
                 Text(
                     text = hint,

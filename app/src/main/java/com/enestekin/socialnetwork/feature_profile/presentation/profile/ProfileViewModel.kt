@@ -34,11 +34,9 @@ savedStateHandle: SavedStateHandle
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-
     val posts = profileUseCases.getPostsForProfile(
-        userId = savedStateHandle.get<String>("userId") ?: getOwnUserId()
+        savedStateHandle.get<String>("userId") ?: getOwnUserId()
     ).cachedIn(viewModelScope)
-
 
 
 

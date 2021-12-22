@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
+import androidx.navigation.navArgument
 import com.enestekin.socialnetwork.core.util.Screen
 import com.enestekin.socialnetwork.feature_activity.presentation.ActivityScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.login.LoginScreen
@@ -135,6 +135,7 @@ fun Navigation(
             )
         ) {
             PostDetailScreen(
+                scaffoldState = scaffoldState,
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate
             )
