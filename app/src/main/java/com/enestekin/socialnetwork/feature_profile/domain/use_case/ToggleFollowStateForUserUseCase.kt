@@ -1,7 +1,7 @@
 package com.enestekin.socialnetwork.feature_profile.domain.use_case
 
 import com.enestekin.socialnetwork.core.util.SimpleResource
-import com.enestekin.socialnetwork.feature_profile.domain.repository.ProfileRepository
+import com.enestekin.socialnetwork.core.domain.repository.ProfileRepository
 
 class ToggleFollowStateForUserUseCase(
     private val repository: ProfileRepository

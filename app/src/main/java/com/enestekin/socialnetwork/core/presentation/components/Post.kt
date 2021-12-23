@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -78,7 +79,10 @@ fun Post(
                         crossfade(true)
                     }
                 ),
-               contentDescription = "Post Image"
+               contentDescription = "Post Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth()
+                    .aspectRatio(16f/9f)
             )
             Column(
                 modifier = Modifier
@@ -105,7 +109,7 @@ fun Post(
                             )
                         ) {
                             append(
-                                LocalContext.current.getString(
+                               " " + LocalContext.current.getString(
                                     R.string.read_more
                                 )
                             )

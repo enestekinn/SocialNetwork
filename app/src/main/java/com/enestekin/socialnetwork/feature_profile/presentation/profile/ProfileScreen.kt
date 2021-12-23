@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -28,8 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.Post
@@ -42,11 +42,13 @@ import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.presentation.util.asString
 import com.enestekin.socialnetwork.core.util.Screen
 import com.enestekin.socialnetwork.core.util.toPx
+import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEvent
 import com.enestekin.socialnetwork.feature_profile.presentation.profile.components.BannerSection
 import com.enestekin.socialnetwork.feature_profile.presentation.profile.components.ProfileHeaderSection
 import kotlinx.coroutines.flow.collectLatest
 
 
+@ExperimentalCoilApi
 @Composable
 fun ProfileScreen(
     scaffoldState: ScaffoldState,
@@ -57,7 +59,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
 
-    val posts = viewModel.posts.collectAsLazyPagingItems()
+    val pagingState = viewModel.pagingState.value
     val lazyListState = rememberLazyListState()
     val toolbarState = viewModel.toolbarState.value
 
@@ -102,6 +104,7 @@ fun ProfileScreen(
     }
     val context = LocalContext.current
     LaunchedEffect(key1 = true){
+        viewModel.setExpandedRatio(1f)
         viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when(event){
@@ -109,6 +112,9 @@ fun ProfileScreen(
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText.asString(context)
                     )
+
+                }
+                is PostEvent.OnLiked -> {
 
                 }
             }
@@ -154,27 +160,25 @@ fun ProfileScreen(
                 }
 
             }
-            items(posts) { post ->
+            items(pagingState.items.size) { i ->
+                val post = pagingState.items[i]
+                if (i >= pagingState.items.size -1 && !pagingState.endReached && !pagingState.isLoading){
+                    viewModel.loadNextPost()
+                }
                 Spacer(
                     modifier = Modifier
                         .height(SpaceMedium)
                 )
                 Post(
-                    post = Post(
-                        id = post?.id ?: "",
-                        userId = post?.userId ?: "",
-                        isLiked = post?.isLiked ?: false,
-                        username = post?.username ?: "",
-                        imageUrl = post?.imageUrl ?: "",
-                        profilePictureUrl = post?.profilePictureUrl ?: "",
-                        description = post?.description ?: "",
-                        likeCount = post?.likeCount ?: 0,
-                        commentCount = post?.commentCount ?: 0,
-                    ),
+                    post = post
+                    ,
                     showProfileImage = false,
                     onPostClicked = {
-                       onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
+                       onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
                     },
+                    onLikeClick = {
+                        viewModel.onEvent(ProfileEvent.LikePost(post.id ))
+                    }
                 )
             }
         }

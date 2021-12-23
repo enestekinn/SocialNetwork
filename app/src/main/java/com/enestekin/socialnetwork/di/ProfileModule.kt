@@ -1,9 +1,10 @@
 package com.enestekin.socialnetwork.di
 
-import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
+import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
 import com.enestekin.socialnetwork.feature_profile.data.remote.ProfileApi
-import com.enestekin.socialnetwork.feature_profile.data.repository.ProfileRepositoryImpl
-import com.enestekin.socialnetwork.feature_profile.domain.repository.ProfileRepository
+import com.enestekin.socialnetwork.core.domain.data.repository.ProfileRepositoryImpl
+import com.enestekin.socialnetwork.core.domain.repository.ProfileRepository
+import com.enestekin.socialnetwork.core.domain.use_case.GetOwnUserIdUseCase
 import com.enestekin.socialnetwork.feature_profile.domain.use_case.*
 import com.google.gson.Gson
 import dagger.Module
@@ -49,6 +50,11 @@ object ProfileModule {
             searchUser = SearchUserUseCase(repository),
             toggleFollowForUser = ToggleFollowStateForUserUseCase(repository)
         )
+    }
+    @Provides
+    @Singleton
+    fun provideToggleFollowForUserUseCase(repository: ProfileRepository): ToggleFollowStateForUserUseCase {
+        return ToggleFollowStateForUserUseCase(repository)
     }
 }
 

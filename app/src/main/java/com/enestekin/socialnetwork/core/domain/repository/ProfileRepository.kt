@@ -1,9 +1,10 @@
-package com.enestekin.socialnetwork.feature_profile.domain.repository
+package com.enestekin.socialnetwork.core.domain.repository
 
 import android.net.Uri
 import androidx.paging.PagingData
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.domain.models.UserItem
+import com.enestekin.socialnetwork.core.util.Constants
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.feature_profile.domain.model.Profile
@@ -14,8 +15,11 @@ import kotlinx.coroutines.flow.Flow
 interface ProfileRepository {
 
 
-    fun getPostsPaged(userId: String): Flow<PagingData<Post>>
-
+suspend  fun getPostsPaged(
+    page: Int = 0,
+    pageSize: Int = Constants.DEFAULT_PAGE_SIZE,
+    userId: String)
+: Resource<List<Post>>
 
     suspend fun  getProfile(userId: String): Resource<Profile>
 

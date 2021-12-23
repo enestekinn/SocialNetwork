@@ -6,7 +6,7 @@ import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_profile.domain.model.UpdateProfileData
-import com.enestekin.socialnetwork.feature_profile.domain.repository.ProfileRepository
+import com.enestekin.socialnetwork.core.domain.repository.ProfileRepository
 import com.enestekin.socialnetwork.feature_profile.util.ProfileConstants
 
 class UpdateProfileUseCase(

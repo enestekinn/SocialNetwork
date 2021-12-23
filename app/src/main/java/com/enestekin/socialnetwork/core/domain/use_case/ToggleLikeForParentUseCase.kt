@@ -1,8 +1,7 @@
-package com.enestekin.socialnetwork.feature_post.domain.use_case
+package com.enestekin.socialnetwork.core.domain.use_case
 
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import com.enestekin.socialnetwork.feature_post.domain.repository.PostRepository
-import com.enestekin.socialnetwork.feature_profile.domain.repository.ProfileRepository
 
 class ToggleLikeForParentUseCase(
     private val repository: PostRepository

@@ -5,4 +5,6 @@ sealed class MainFeedEvent {
     object  LoadedPage: MainFeedEvent()
 
 
+    data class LikedPost(val postId: String): MainFeedEvent()
+
 }

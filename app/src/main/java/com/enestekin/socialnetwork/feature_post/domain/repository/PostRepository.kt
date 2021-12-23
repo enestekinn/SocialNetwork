@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.paging.PagingData
 import com.enestekin.socialnetwork.core.domain.models.Comment
 import com.enestekin.socialnetwork.core.domain.models.Post
+import com.enestekin.socialnetwork.core.domain.models.UserItem
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +25,6 @@ suspend fun createComment(postId: String, comment: String): SimpleResource
 suspend fun likeParent(parentId: String, parentType: Int): SimpleResource
 
 suspend fun unLikeParent(parentId: String, parentType: Int): SimpleResource
+
+suspend fun getLikesForParent(parentId: String): Resource<List<UserItem>>
 }

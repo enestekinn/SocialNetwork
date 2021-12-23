@@ -141,10 +141,18 @@ fun Navigation(
             )
         }
 
-        composable(Screen.PersonListScreen.route) {
+        composable(
+            route = Screen.PersonListScreen.route + "/{parentId}",
+            arguments = listOf(
+                navArgument("parentId"){
+                    type = NavType.StringType
+                }
+            )
+        ) {
             PersonListScreen(
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
             )
         }
     }

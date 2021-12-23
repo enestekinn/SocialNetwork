@@ -2,7 +2,7 @@ package com.enestekin.socialnetwork.feature_post.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
+import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.util.Constants
 import retrofit2.HttpException

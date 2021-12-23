@@ -1,6 +1,7 @@
-package com.enestekin.socialnetwork.core.domain.data.remote
+package com.enestekin.socialnetwork.feature_post.data.remote
 
 import com.enestekin.socialnetwork.core.domain.data.dto.response.BasicApiResponse
+import com.enestekin.socialnetwork.core.domain.data.dto.response.UserItemDto
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.feature_post.data.remote.dto.CommentDto
 import com.enestekin.socialnetwork.feature_post.data.remote.request.CreateCommentRequest
@@ -58,6 +59,11 @@ PostApi {
         @Query ("parentId") parentId: String,
         @Query ("parentType") parentType: Int
     ): BasicApiResponse<Unit>
+
+    @GET("/api/like/parent")
+    suspend fun getLikesForParent(
+        @Query("parentId") parentId: String
+    ): List<UserItemDto>
 
     companion object {
         //const val BASE_URL = "http://192.168.0.102:8001/"

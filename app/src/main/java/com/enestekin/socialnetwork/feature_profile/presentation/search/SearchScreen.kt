@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.User
+import com.enestekin.socialnetwork.core.domain.models.UserItem
 import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.presentation.components.UserProfileItem
@@ -71,16 +72,7 @@ fun SearchScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(state.userItems) { user ->
-                        UserProfileItem(
-                            user = User(
-                                userId =user.userId,
-                                profilePictureUrl = user.profilePicture,
-                                username = user.username,
-                                description = user.bio,
-                                followerCount = 0,
-                                followingCount = 0,
-                                postCount = 0
-                            ),
+                   UserProfileItem(user = user,
                             actionIcon = {
                                 IconButton(
                                     onClick = {

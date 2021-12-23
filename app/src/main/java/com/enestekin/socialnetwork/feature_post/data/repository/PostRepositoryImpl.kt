@@ -6,9 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.domain.data.remote.PostApi
+import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
 import com.enestekin.socialnetwork.core.domain.models.Comment
 import com.enestekin.socialnetwork.core.domain.models.Post
+import com.enestekin.socialnetwork.core.domain.models.UserItem
 import com.enestekin.socialnetwork.core.util.Constants
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.SimpleResource
@@ -214,7 +215,25 @@ class PostRepositoryImpl(
             )
         }    }
 
+    override suspend fun getLikesForParent(parentId: String): Resource<List<UserItem>> {
+        return try {
+            val response = api.getLikesForParent(
+                parentId = parentId,
+            )
+            Resource.Success(response.map { it.toUserItem() })
 
-}
+        } catch (e: IOException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
+            )
+
+        }  catch (e: HttpException){
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
+            )
+        }    }
+    }
+
+
 
 

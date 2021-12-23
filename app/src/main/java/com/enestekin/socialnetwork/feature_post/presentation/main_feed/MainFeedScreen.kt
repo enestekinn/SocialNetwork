@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
@@ -23,6 +24,8 @@ import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.components.Post
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.util.Screen
+import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEvent
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -35,6 +38,16 @@ fun MainFeedScreen(
     val posts = viewModel.posts.collectAsLazyPagingItems()
     val state = viewModel.state.value
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is PostEvent.OnLiked -> {
+                    posts.refresh()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -89,6 +102,11 @@ fun MainFeedScreen(
                         ),
                         onPostClicked = {
                             onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
+                        },
+
+                        onLikeClick = {
+                            viewModel.onEvent(MainFeedEvent.LikedPost(post?.id ?: "" ))
+
                         }
                     )
                 }
