@@ -32,11 +32,11 @@ class PostRepositoryImpl(
     private val gson: Gson,
 ): PostRepository {
 
-    override suspend fun getPostsForFollows(page: Int, pagesize: Int): Resource<List<Post>> {
+    override suspend fun getPostsForFollows(page: Int, pageSize: Int): Resource<List<Post>> {
         return try {
             val posts = api.getPostsForFollows(
                 page = page,
-                pageSize = page
+                pageSize = pageSize
             )
             Resource.Success(data = posts)
         } catch (e: IOException) {

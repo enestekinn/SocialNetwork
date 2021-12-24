@@ -14,7 +14,6 @@ import com.enestekin.socialnetwork.core.util.UiText
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
 import com.enestekin.socialnetwork.feature_post.presentation.util.CommentError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -90,57 +89,75 @@ class PostDetailViewModel @Inject constructor(
         parentType: Int,
         isLiked: Boolean
     ) {
-
-        when(parentType){
-            ParentType.Post.type -> {
-                _state.value = state.value.copy(
-                    post =  state.value.post?.copy(
-                        isLiked = !isLiked
-                    )
-                )
-            }
-            ParentType.Comment.type -> {
-                _state.value = state.value.copy(
-                    comments = state.value.comments.map{
-                        if (it.id == parentId){
-                            it.copy(isLiked = !isLiked)
-                        }else it
-                    }
-                )
-            }
-        }
-
         viewModelScope.launch {
-            val result = postUseCases.toggleLikeForParent(
-                parentId = parentId,
-                parentType = parentType,
-                isLiked = isLiked
-            )
-            when(result){
-                is Resource.Success -> Unit
-                is Resource.Error -> {
-                    when(parentType){
-                        ParentType.Post.type -> {
-                            _state.value = state.value.copy(
-                                post =  state.value.post?.copy(
-                                    isLiked = !isLiked
+            val currentLikeCount = state.value.post?.likeCount ?: 0
+            when (parentType) {
+                ParentType.Post.type -> {
+                    val post = state.value.post
+                    _state.value = state.value.copy(
+                        post = state.value.post?.copy(
+                            isLiked = !isLiked,
+                            likeCount = if (isLiked) {
+                                post?.likeCount?.minus(1) ?: 0
+                            } else post?.likeCount?.plus(1) ?: 0
+                        )
+                    )
+                }
+                ParentType.Comment.type -> {
+                    _state.value = state.value.copy(
+                        comments = state.value.comments.map { comment ->
+                            if (comment.id == parentId) {
+                                comment.copy(
+                                    isLiked = !isLiked,
+                                    likeCount = if (isLiked) {
+                                        comment.likeCount - 1
+                                    } else comment.likeCount + 1
                                 )
-                            )
+                            } else comment
                         }
-                        ParentType.Comment.type -> {
-
-                            _state.value = state.value.copy(
-                                comments = state.value.comments.map{
-                                    if (it.id == parentId){
-                                        it.copy(isLiked = !isLiked)
-                                    }else it
-                                }
-                            )
-                        }
-                    }
+                    )
                 }
             }
 
+            viewModelScope.launch {
+                val result = postUseCases.toggleLikeForParent(
+                    parentId = parentId,
+                    parentType = parentType,
+                    isLiked = isLiked
+                )
+                when (result) {
+                    is Resource.Success -> Unit
+                    is Resource.Error -> {
+                        when (parentType) {
+                            ParentType.Post.type -> {
+                                val post = state.value.post
+                                _state.value = state.value.copy(
+                                    post = state.value.post?.copy(
+                                        isLiked = isLiked,
+                                        likeCount = currentLikeCount
+                                    )
+                                )
+                            }
+                            ParentType.Comment.type -> {
+
+                                _state.value = state.value.copy(
+                                    comments = state.value.comments.map { comment ->
+                                        if (comment.id == parentId) {
+                                            comment.copy(
+                                                isLiked = !isLiked,
+                                            likeCount = if (comment.isLiked){
+                                                comment.likeCount -1
+                                            } else comment.likeCount +1
+                                                )
+                                        } else comment
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 

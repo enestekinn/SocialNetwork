@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import coil.annotation.ExperimentalCoilApi
 import com.enestekin.socialnetwork.core.util.Screen
 import com.enestekin.socialnetwork.feature_activity.presentation.ActivityScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.login.LoginScreen
@@ -24,6 +25,7 @@ import com.enestekin.socialnetwork.feature_profile.presentation.profile.ProfileS
 import com.enestekin.socialnetwork.feature_profile.presentation.search.SearchScreen
 import com.enestekin.socialnetwork.feature_splash.presentation.SplashScreen
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun Navigation(
@@ -124,7 +126,7 @@ fun Navigation(
             )
         }
         composable(
-            route = Screen.PostDetailScreen.route + "/{postId}",
+            route = Screen.PostDetailScreen.route + "/{postId}?shouldShowKeyboard={shouldShowKeyboard}",
             arguments = listOf(
                 navArgument(
                     name = "postId"
@@ -134,10 +136,12 @@ fun Navigation(
 
             )
         ) {
+            val shouldShowKeyboard = it.arguments?.getBoolean("shouldShowKeyboard") ?: false
             PostDetailScreen(
                 scaffoldState = scaffoldState,
                 onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate
+                onNavigate = navController::navigate,
+                shouldShowKeyboard = shouldShowKeyboard
             )
         }
 
@@ -146,6 +150,10 @@ fun Navigation(
             arguments = listOf(
                 navArgument("parentId"){
                     type = NavType.StringType
+                },
+                navArgument("shouldShowKeyboard"){
+                    type = NavType.BoolType
+                    defaultValue = false
                 }
             )
         ) {

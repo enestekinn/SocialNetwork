@@ -9,15 +9,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,13 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
-import com.enestekin.socialnetwork.core.domain.models.Comment
 import com.enestekin.socialnetwork.core.presentation.components.ActionRow
 import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.presentation.ui.theme.*
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.presentation.util.asString
+import com.enestekin.socialnetwork.core.presentation.util.showKeyboard
 import com.enestekin.socialnetwork.core.util.Screen
 import kotlinx.coroutines.flow.collectLatest
 
@@ -41,20 +42,29 @@ fun PostDetailScreen(
     scaffoldState: ScaffoldState,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
-    viewModel: PostDetailViewModel = hiltViewModel()
+    viewModel: PostDetailViewModel = hiltViewModel(),
+    shouldShowKeyboard: Boolean = false
 ) {
 
     val state = viewModel.state.value
     val commentTextFieldState = viewModel.commentTextFieldState.value
 
+    val focusRequester = remember {
+        FocusRequester()
+    }
+
     val context = LocalContext.current
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
+        if (shouldShowKeyboard) {
+            context.showKeyboard()
+            focusRequester.requestFocus()
+        }
         viewModel.eventFlow.collectLatest { event ->
-            when(event){
+            when (event) {
                 is UiEvent.ShowSnackbar -> {
-scaffoldState.snackbarHostState.showSnackbar(
-    message = event.uiText.asString(context)
-)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
                 }
             }
         }
@@ -78,8 +88,8 @@ scaffoldState.snackbarHostState.showSnackbar(
             )
         LazyColumn(
             modifier = Modifier
-                .weight(10f, fill = true)
-                .background(MaterialTheme.colors.surface)
+                .weight(1f)
+                .background(MaterialTheme.colors.surface),
         ) {
             item {
                 Column(
@@ -110,10 +120,11 @@ scaffoldState.snackbarHostState.showSnackbar(
                                             crossfade(true)
                                         }
                                     ),
+                                    contentScale = ContentScale.Crop,
                                     contentDescription = "Post Image",
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .aspectRatio(16f/9f)
+                                        .aspectRatio(16f / 9f)
 
                                 )
 
@@ -131,12 +142,16 @@ scaffoldState.snackbarHostState.showSnackbar(
                                             viewModel.onEvent(PostDetailEvent.LikedPost)
                                         },
                                         onCommentClick = {
+                                            // opens keyboard
+                                            context.showKeyboard()
+                                            focusRequester.requestFocus()
 
                                         },
-                                        onSharedClick = {
+                                        onShareClick = {
 
                                         },
                                         onUsernameClick = {
+                                            onNavigate(Screen.ProfileScreen.route + "?userId=${post.userId}")
 
                                         },
                                         isLiked = state.post.isLiked
@@ -157,7 +172,8 @@ scaffoldState.snackbarHostState.showSnackbar(
                                         fontWeight = FontWeight.Bold,
                                         style = MaterialTheme.typography.body2,
                                         modifier = Modifier.clickable {
-                                            onNavigate(Screen.PersonListScreen.route + "${post.id}")
+                                            onNavigate(Screen.PersonListScreen.route + "/${post.id}")
+
                                         }
                                     )
                                 }
@@ -194,9 +210,9 @@ scaffoldState.snackbarHostState.showSnackbar(
                             vertical = SpaceSmall
                         ),
                     comment = comment,
-                    onLikeClick ={
+                    onLikeClick = {
 
-                    viewModel.onEvent(PostDetailEvent.LikeComment(comment.id))
+                        viewModel.onEvent(PostDetailEvent.LikeComment(comment.id))
                     },
                     onLikedByClick = {
                         onNavigate(Screen.PersonListScreen.route + "/${comment.id}")
@@ -210,26 +226,28 @@ scaffoldState.snackbarHostState.showSnackbar(
                 .fillMaxWidth()
                 .padding(SpaceLarge),
             verticalAlignment = Alignment.CenterVertically
-            ) {
+        ) {
             StandardTextField(
                 text = commentTextFieldState.text,
                 onValueChange = {
                     viewModel.onEvent(PostDetailEvent.EnteredComment(it))
                 },
-                backgroundColor = MaterialTheme.colors.background ,
+                backgroundColor = MaterialTheme.colors.background,
                 modifier = Modifier
                     .weight(1f)
                     .shadow(15.dp),
-                hint = stringResource(id = R.string.enter_a_comment)
+                hint = stringResource(id = R.string.enter_a_comment),
+                focusRequester = focusRequester
+
             )
-            if (viewModel.commentState.value.isLoading){
+            if (viewModel.commentState.value.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .padding(horizontal = 12.dp)
                         .size(24.dp),
                     strokeWidth = 2.dp
                 )
-            }else {
+            } else {
                 IconButton(
                     onClick = {
                         viewModel.onEvent(PostDetailEvent.Comment)
@@ -240,7 +258,7 @@ scaffoldState.snackbarHostState.showSnackbar(
                         imageVector = Icons.Default.Send,
                         tint = if (commentTextFieldState.error == null) {
                             MaterialTheme.colors.primary
-                        }else MaterialTheme.colors.background,
+                        } else MaterialTheme.colors.background,
                         contentDescription = stringResource(id = R.string.send_comment)
                     )
 

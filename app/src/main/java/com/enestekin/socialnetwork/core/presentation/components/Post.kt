@@ -95,7 +95,7 @@ fun Post(
                     isLiked = post.isLiked,
                     onLikeClick = onLikeClick,
                     onCommentClick =onCommentClick,
-                    onSharedClick = onSharedClick,
+                    onShareClick = onSharedClick,
                     onUsernameClick = onUsernameClick
                 )
                 Spacer(modifier = Modifier.height(SpaceSmall))
@@ -239,7 +239,7 @@ fun ActionRow(
     isLiked: Boolean = false,
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
-    onSharedClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     username: String,
     onUsernameClick: () -> Unit = {}
 ) {
@@ -266,7 +266,7 @@ fun ActionRow(
             isLiked = isLiked,
             onLikeClick = onLikeClick,
             onCommentClick = onCommentClick,
-            onSharedClick = onSharedClick
+            onSharedClick = onShareClick
         )
 
     }

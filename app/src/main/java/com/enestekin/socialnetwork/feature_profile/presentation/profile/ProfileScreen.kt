@@ -169,6 +169,9 @@ fun ProfileScreen(
                     onPostClick = {
                        onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
                     },
+                    onCommentClick = {
+                        onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
+                    },
                     onLikeClick = {
                         viewModel.onEvent(ProfileEvent.LikePost(post.id ))
                     }

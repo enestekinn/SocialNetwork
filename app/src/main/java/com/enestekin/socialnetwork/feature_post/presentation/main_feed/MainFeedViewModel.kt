@@ -11,6 +11,7 @@ import com.enestekin.socialnetwork.core.presentation.util.Event
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.DefaultPaginator
 import com.enestekin.socialnetwork.core.util.ParentType
+import com.enestekin.socialnetwork.core.util.PostLiker
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
 import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEvent
@@ -22,7 +23,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainFeedViewModel @Inject constructor(
-    private val postUseCases: PostUseCases
+    private val postUseCases: PostUseCases,
+    private val postLiker: PostLiker
+
 ) : ViewModel() {
 
     private val _eventFlow = MutableSharedFlow<Event>()
@@ -58,7 +61,7 @@ class MainFeedViewModel @Inject constructor(
     fun onEvent(event: MainFeedEvent) {
         when(event) {
             is MainFeedEvent.LikedPost -> {
-
+            toggleLikeForParent(event.postId)
             }
         }
     }
@@ -71,22 +74,24 @@ class MainFeedViewModel @Inject constructor(
 
     private fun toggleLikeForParent(
         parentId: String,
-        isLiked: Boolean
     ) {
-        viewModelScope.launch {
-            val result = postUseCases.toggleLikeForParent(
+viewModelScope.launch {
+    postLiker.toggleLike(
+        posts = pagingState.value.items,
+        parentId = parentId,
+        onRequest = { isLiked ->
+            postUseCases.toggleLikeForParent(
                 parentId = parentId,
                 parentType = ParentType.Post.type,
                 isLiked = isLiked
             )
-            when(result) {
-                is Resource.Success -> {
-                    _eventFlow.emit(PostEvent.OnLiked)
-                }
-                is Resource.Error -> {
-
-                }
-            }
+        },
+        onStateUpdated = {posts ->
+                    _pagingState.value = pagingState.value.copy(
+                items = posts
+            ).also { println("toggleLikeForParent: $posts") }
         }
+    )
+}
     }
 }

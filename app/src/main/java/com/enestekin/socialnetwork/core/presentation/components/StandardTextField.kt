@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.core.presentation.components
 
+import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -10,6 +11,9 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -43,12 +47,15 @@ fun StandardTextField(
     isPasswordToggleDisplayed: Boolean = keyboardType == KeyboardType.Password,
     isPasswordVisible: Boolean = false, // when screen route  save passwordVisibility in viewModel
     onPasswordToggleClick: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    focusRequester: FocusRequester = FocusRequester()
 ) {
 
 
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier)
     ) {
 
         TextField(
@@ -125,6 +132,7 @@ fun StandardTextField(
                 .semantics {
                     testTag = TestTags.STANDARD_TEXT_FIELD
                 }
+                .focusRequester(focusRequester = focusRequester),
         )
         if (error.isNotEmpty()) {
             Text(

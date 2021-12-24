@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.components.Post
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
@@ -27,6 +28,7 @@ import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEve
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@ExperimentalCoilApi
 @Composable
 fun MainFeedScreen(
     onNavigate: (String) -> Unit = {},
@@ -97,7 +99,7 @@ fun MainFeedScreen(
                             viewModel.onEvent(MainFeedEvent.LikedPost(post.id))
                         }
                     )
-                    if (i < pagingState.items.size - 1) {
+                    if (i < pagingState.items.size - 1) { // last post
                         Spacer(modifier = Modifier.height(SpaceLarge))
                     }
                 }
