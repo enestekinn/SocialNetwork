@@ -31,7 +31,7 @@ fun BannerSection(
     leftIconModifier: Modifier = Modifier,
     rightIconModifier: Modifier = Modifier,
     bannerUrl: String? = null,
-    topSkill: List<Skill> = emptyList(),
+    topSkills: List<Skill> = emptyList(),
     shouldShowGitHub: Boolean = false,
     shouldShowInstagram:Boolean = false,
     shouldShowLinkedIn: Boolean = false,
@@ -77,7 +77,7 @@ fun BannerSection(
 
 
         ) {
-            topSkill.forEach { skill ->
+            topSkills.forEach { skill ->
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 Image(
                     painter = rememberImagePainter(

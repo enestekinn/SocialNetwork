@@ -6,33 +6,38 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import com.enestekin.socialnetwork.core.domain.util.getFileName
 import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCrop.RESULT_ERROR
 import java.io.File
 
 class CropActivityResultContract(
-    private val aspectRatioX:Float,
+    private val aspectRatioX: Float,
     private val aspectRatioY: Float,
 ) : ActivityResultContract<Uri, Uri?>() {
 
     override fun createIntent(context: Context, input: Uri): Intent {
         return UCrop.of(
             input,
-                Uri.fromFile(
-                    File(
-                        context.cacheDir,
-                        context.contentResolver.getFileName(input)
-                    )
+            Uri.fromFile(
+                File(
+                    context.cacheDir,
+                    context.contentResolver.getFileName(input)
                 )
+            )
 
-                )
+        )
 
-            .withAspectRatio(aspectRatioX,aspectRatioY)
+            .withAspectRatio(aspectRatioX, aspectRatioY)
             .getIntent(context)
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-
-return UCrop.getOutput(intent ?: return null)
+        if (intent == null) {
+            return null
+        }
+        if (resultCode == RESULT_ERROR) {
+            val error = UCrop.getError(intent)
+            error?.printStackTrace()
+        }
+        return UCrop.getOutput(intent)
     }
-
-
 }

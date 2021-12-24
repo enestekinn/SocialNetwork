@@ -11,20 +11,21 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
 
-val posts : Flow<PagingData<Post>>
 
-// username is coming from userid
-suspend fun createPost(description: String, imageUri: Uri): SimpleResource
+    suspend fun getPostsForFollows(page: Int, pagesize: Int): Resource<List<Post>>
 
-suspend fun getPostDetails(postId: String): Resource<Post>
+    // username is coming from userid
+    suspend fun createPost(description: String, imageUri: Uri): SimpleResource
 
-suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
+    suspend fun getPostDetails(postId: String): Resource<Post>
 
-suspend fun createComment(postId: String, comment: String): SimpleResource
+    suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
 
-suspend fun likeParent(parentId: String, parentType: Int): SimpleResource
+    suspend fun createComment(postId: String, comment: String): SimpleResource
 
-suspend fun unLikeParent(parentId: String, parentType: Int): SimpleResource
+    suspend fun likeParent(parentId: String, parentType: Int): SimpleResource
 
-suspend fun getLikesForParent(parentId: String): Resource<List<UserItem>>
+    suspend fun unLikeParent(parentId: String, parentType: Int): SimpleResource
+
+    suspend fun getLikesForParent(parentId: String): Resource<List<UserItem>>
 }

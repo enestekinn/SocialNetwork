@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,13 +43,13 @@ fun Post(
     post: Post,// we just send whole post for now  , but later post id
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
-    onPostClicked: () -> Unit = {},
+    onPostClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
     onSharedClick: () -> Unit = {},
     onUsernameClick: () -> Unit = {},
 
-) {
+    ) {
 
     Box(
         modifier = modifier
@@ -68,7 +67,7 @@ fun Post(
                 .shadow(5.dp) // should be before background
                 .background(MediumGray)
                 .clickable {
-                    onPostClicked()
+                    onPostClick()
                 }
 
         ) {
@@ -93,6 +92,7 @@ fun Post(
                 ActionRow(
                     username = "Enes Tekin",
                     modifier = Modifier.fillMaxWidth(),
+                    isLiked = post.isLiked,
                     onLikeClick = onLikeClick,
                     onCommentClick =onCommentClick,
                     onSharedClick = onSharedClick,

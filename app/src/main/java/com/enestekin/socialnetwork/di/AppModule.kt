@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import com.enestekin.socialnetwork.core.domain.repository.ProfileRepository
 import com.enestekin.socialnetwork.core.domain.use_case.GetOwnUserIdUseCase
 import com.enestekin.socialnetwork.core.util.Constants
+import com.enestekin.socialnetwork.core.util.DefaultPostLiker
+import com.enestekin.socialnetwork.core.util.PostLiker
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -51,6 +53,13 @@ object AppModule {
             )
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun providePostLiker(): PostLiker{
+        return DefaultPostLiker()
+    }
+
     @Provides
     @Singleton
     fun provideGson(): Gson {

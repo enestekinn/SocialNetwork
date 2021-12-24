@@ -72,19 +72,20 @@ fun SearchScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(state.userItems) { user ->
-                   UserProfileItem(user = user,
+                        UserProfileItem(
+                            user = user,
                             actionIcon = {
                                 IconButton(
                                     onClick = {
                                         viewModel.onEvent(SearchEvent.ToggleFollowState(user.userId))
-
                                     },
-                                    modifier = Modifier.size(IconSizeMedium)
+                                    modifier = Modifier
+                                        .size(IconSizeMedium)
                                 ) {
                                     Icon(
-                                        imageVector =if (user.isFollowing){
+                                        imageVector = if (user.isFollowing) {
                                             Icons.Default.PersonRemove
-                                        }else Icons.Default.PersonAdd,
+                                        } else Icons.Default.PersonAdd,
                                         contentDescription = null,
                                         tint = MaterialTheme.colors.onBackground,
 
