@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.components.StandardTextField
@@ -48,6 +49,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun EditProfileScreen(
     scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
     viewModel: EditProfileViewModel = hiltViewModel(),
@@ -147,15 +149,11 @@ fun EditProfileScreen(
             BannerEditSection(
                 bannerImage = rememberImagePainter(
                     data = viewModel.bannerUri.value ?: profileState.profile?.bannerUrl,
-                    builder =  {
-                        crossfade(true)
-                    }
+                 imageLoader = imageLoader
                 ),
                 profileImage = rememberImagePainter(
                     data = viewModel.profilePictureUri.value ?: profileState.profile?.profilePictureUrl,
-                    builder =  {
-                        crossfade(true)
-                    }
+                  imageLoader = imageLoader
                 ),
                 profilePictureSize = profilePictureSize,
                 onBannerClick ={

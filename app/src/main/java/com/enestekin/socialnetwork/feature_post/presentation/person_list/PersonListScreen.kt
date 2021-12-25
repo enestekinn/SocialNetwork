@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.User
 import com.enestekin.socialnetwork.core.domain.models.UserItem
@@ -32,9 +33,10 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PersonListScreen(
     scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
-    viewModel: PersonListViewModel = hiltViewModel()
+    viewModel: PersonListViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.value
     val context = LocalContext.current
@@ -73,6 +75,7 @@ fun PersonListScreen(
                 items(state.users) { user ->
                     UserProfileItem(
                         user = user,
+                        imageLoader = imageLoader,
                         actionIcon = {
                             Icon(
                                 imageVector = if (user.isFollowing) {

@@ -30,6 +30,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
@@ -41,6 +42,7 @@ import com.enestekin.socialnetwork.core.util.Constants.MAX_POST_DESCRIPTION_LINE
 @Composable
 fun Post(
     post: Post,// we just send whole post for now  , but later post id
+    imageLoader: ImageLoader,
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
     onPostClick: () -> Unit = {},
@@ -74,9 +76,7 @@ fun Post(
             Image(
                 painter = rememberImagePainter(
                     data = post.imageUrl,
-                    builder = {
-                        crossfade(true)
-                    }
+                   imageLoader = imageLoader
                 ),
                contentDescription = "Post Image",
                 contentScale = ContentScale.Crop,
@@ -90,7 +90,7 @@ fun Post(
 
             ) {
                 ActionRow(
-                    username = "Enes Tekin",
+                    username = post.username,
                     modifier = Modifier.fillMaxWidth(),
                     isLiked = post.isLiked,
                     onLikeClick = onLikeClick,
@@ -155,9 +155,7 @@ fun Post(
             Image(
                 rememberImagePainter(
                     data = post.profilePictureUrl,
-                    builder = {
-                        crossfade(true)
-                    }
+                 imageLoader =  imageLoader,
                 ),
                 contentDescription = "Profile Picture",
                 modifier = Modifier

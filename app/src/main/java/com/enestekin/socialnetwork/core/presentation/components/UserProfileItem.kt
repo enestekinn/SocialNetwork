@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.core.domain.models.User
 import com.enestekin.socialnetwork.core.domain.models.UserItem
@@ -23,6 +24,7 @@ import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 @Composable
 fun UserProfileItem(
     user: UserItem,
+    imageLoader: ImageLoader,
     modifier: Modifier = Modifier,
     actionIcon: @Composable () -> Unit = {},
     onItemClick: () -> Unit = {},
@@ -48,9 +50,7 @@ fun UserProfileItem(
             Image(
                 painter = rememberImagePainter(
                     data = user.profilePicture,
-                    builder = {
-                        crossfade(true)
-                    }
+                   imageLoader = imageLoader
                 ),
                 contentDescription = null,
                 modifier = Modifier

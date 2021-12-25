@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.Comment
@@ -27,6 +28,7 @@ import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 fun Comment(
     modifier: Modifier = Modifier,
     comment: Comment,
+    imageLoader: ImageLoader,
     onLikeClick: (Boolean) -> Unit = {},
     onLikedByClick: () -> Unit = {},
 ) {
@@ -56,9 +58,7 @@ fun Comment(
                     Image(
                         painter = rememberImagePainter(
                             data = comment.profilePictureUrl,
-                            builder = {
-                                crossfade(true)
-                            }
+                          imageLoader = imageLoader
                         ),
                         contentDescription = null,
                         modifier = Modifier

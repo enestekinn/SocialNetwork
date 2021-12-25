@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
@@ -49,6 +50,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ProfileScreen(
     scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader,
     userId: String? = null,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
@@ -165,6 +167,7 @@ fun ProfileScreen(
 
                 Post(
                     post = post,
+                    imageLoader = imageLoader,
                     showProfileImage = false,
                     onPostClick = {
                        onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
@@ -214,6 +217,7 @@ fun ProfileScreen(
                             translationX = (1f - toolbarState.expandedRatio) *
                                     -iconHorizontalCenterLength
                         },
+                    imageLoader = imageLoader,
                     topSkills = profile.topSkills,
                     shouldShowGitHub = profile.gitHubUrl != null && profile.gitHubUrl.isNotBlank(),
                     shouldShowInstagram = profile.instagramUrl != null && profile.instagramUrl.isNotBlank(),
@@ -222,7 +226,8 @@ fun ProfileScreen(
                 )
                 Image(
                     painter = rememberImagePainter(
-                        data = profile.profilePictureUrl
+                        data = profile.profilePictureUrl,
+                        imageLoader = imageLoader
                     ),
                     contentDescription = stringResource(id = R.string.profile_image),
                     modifier = Modifier

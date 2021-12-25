@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
 import coil.compose.rememberImagePainter
 import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.presentation.components.ActionRow
@@ -40,6 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun PostDetailScreen(
     scaffoldState: ScaffoldState,
+    imageLoader: ImageLoader,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
     viewModel: PostDetailViewModel = hiltViewModel(),
@@ -116,9 +118,7 @@ fun PostDetailScreen(
                                 Image(
                                     painter = rememberImagePainter(
                                         data = state.post.imageUrl,
-                                        builder = {
-                                            crossfade(true)
-                                        }
+                                       imageLoader = imageLoader
                                     ),
                                     contentScale = ContentScale.Crop,
                                     contentDescription = "Post Image",
@@ -182,10 +182,9 @@ fun PostDetailScreen(
                         Image(
                             painter = rememberImagePainter(
                                 data = state.post?.profilePictureUrl,
-                                builder = {
-                                    crossfade(true)
-                                }
-                            ),
+                                imageLoader =  imageLoader,
+
+                                ),
                             contentDescription = "Profile picture",
                             modifier = Modifier
                                 .size(ProfilePictureSizeMedium)
@@ -209,6 +208,7 @@ fun PostDetailScreen(
                             horizontal = SpaceLarge,
                             vertical = SpaceSmall
                         ),
+                    imageLoader = imageLoader,
                     comment = comment,
                     onLikeClick = {
 

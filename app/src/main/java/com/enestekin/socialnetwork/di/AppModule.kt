@@ -3,6 +3,9 @@ package com.enestekin.socialnetwork.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import androidx.compose.ui.platform.LocalContext
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import com.enestekin.socialnetwork.core.domain.repository.ProfileRepository
 import com.enestekin.socialnetwork.core.domain.use_case.GetOwnUserIdUseCase
 import com.enestekin.socialnetwork.core.util.Constants
@@ -51,6 +54,17 @@ object AppModule {
                     level = HttpLoggingInterceptor.Level.BODY
                 }
             )
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideImageLoader(app: Application): ImageLoader {
+        return ImageLoader.Builder(app)
+            .crossfade(true)
+            .componentRegistry {
+                add(SvgDecoder(app))
+            }
             .build()
     }
 
