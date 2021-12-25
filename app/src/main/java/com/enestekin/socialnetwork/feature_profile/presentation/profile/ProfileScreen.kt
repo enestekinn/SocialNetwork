@@ -2,17 +2,19 @@ package com.enestekin.socialnetwork.feature_profile.presentation.profile
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,8 +27,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
@@ -35,6 +39,7 @@ import com.enestekin.socialnetwork.R
 import com.enestekin.socialnetwork.core.domain.models.User
 import com.enestekin.socialnetwork.core.presentation.components.Post
 import com.enestekin.socialnetwork.core.presentation.ui.theme.ProfilePictureSizeLarge
+import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceMedium
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.presentation.util.asString
@@ -53,7 +58,7 @@ fun ProfileScreen(
     imageLoader: ImageLoader,
     userId: String? = null,
     onNavigate: (String) -> Unit = {},
-    onNavigateUp: () -> Unit = {},
+    onLogout: () -> Unit = {},
     profilePictureSize: Dp = ProfilePictureSizeLarge,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -81,12 +86,12 @@ fun ProfileScreen(
     val maxOffset = remember {
         toolbarHeightExpanded - toolbarHeightCollapsed
     }
-     val state =viewModel.state.value
+    val state = viewModel.state.value
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
-                if(delta > 0f && lazyListState.firstVisibleItemIndex != 0) {
+                if (delta > 0f && lazyListState.firstVisibleItemIndex != 0) {
                     return Offset.Zero
                 }
                 val newOffset = viewModel.toolbarState.value.toolbarOffsetY + delta
@@ -102,11 +107,11 @@ fun ProfileScreen(
         }
     }
     val context = LocalContext.current
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         viewModel.setExpandedRatio(1f)
         viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
-            when(event){
+            when (event) {
                 is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText.asString(context)
@@ -134,15 +139,17 @@ fun ProfileScreen(
             state = lazyListState
         ) {
             item {
-                Spacer(modifier = Modifier.height(
-                    toolbarHeightExpanded - profilePictureSize / 2f
-                ))
+                Spacer(
+                    modifier = Modifier.height(
+                        toolbarHeightExpanded - profilePictureSize / 2f
+                    )
+                )
             }
             item {
                 state.profile?.let { profile ->
                     ProfileHeaderSection(
                         user = User(
-                            userId = profile.userId ,
+                            userId = profile.userId,
                             profilePictureUrl = profile.profilePictureUrl,
                             username = profile.username,
                             description = profile.bio,
@@ -152,8 +159,11 @@ fun ProfileScreen(
                         ),
                         isFollowing = profile.isFollowing,
                         isOwnProfile = profile.isOwnProfile,
+                        onLogoutClick = {
+                            viewModel.onEvent(ProfileEvent.ShowLogoutDialog)
+                        },
                         onEditClick = {
-                           onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}")
+                            onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}")
                         }
                     )
                 }
@@ -161,7 +171,7 @@ fun ProfileScreen(
             }
             items(pagingState.items.size) { i ->
                 val post = pagingState.items[i]
-                if (i >= pagingState.items.size -1 && !pagingState.endReached && !pagingState.isLoading){
+                if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
                     viewModel.loadNextPost()
                 }
 
@@ -170,13 +180,13 @@ fun ProfileScreen(
                     imageLoader = imageLoader,
                     showProfileImage = false,
                     onPostClick = {
-                       onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
+                        onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
                     },
                     onCommentClick = {
                         onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
                     },
                     onLikeClick = {
-                        viewModel.onEvent(ProfileEvent.LikePost(post.id ))
+                        viewModel.onEvent(ProfileEvent.LikePost(post.id))
                     }
                 )
             }
@@ -253,7 +263,57 @@ fun ProfileScreen(
                 )
             }
         }
+        if (state.isLogoutDialogVisible) {
+
+
+            Dialog(
+                onDismissRequest = {
+                    viewModel.onEvent(ProfileEvent.Logout)
+                viewModel.onEvent(ProfileEvent.DismissLogoutDialog)
+
+            }) {
+
+                Column(
+                    modifier = Modifier
+                        .background(
+                            color =MaterialTheme.colors.surface,
+                        shape = MaterialTheme.shapes.medium)
+                        .padding(SpaceMedium)
+                ) {
+                    Text(text = stringResource(id = R.string.do_you_want_to_logout))
+                    Spacer(modifier = Modifier.height(SpaceMedium))
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+
+                        Text(
+                            text = stringResource(id = R.string.no).uppercase(),
+                            color = MaterialTheme.colors.onBackground,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.clickable {
+
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(SpaceMedium))
+                        Text(
+                            text = stringResource(id = R.string.yes).uppercase(),
+                            color = MaterialTheme.colors.primary,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.clickable {
+                                viewModel.onEvent(ProfileEvent.Logout)
+                                viewModel.onEvent(ProfileEvent.DismissLogoutDialog)
+                                    onLogout()
+                            }
+                        )
+
+                    }
+                }
+            }
+
+
+
+
+        }
     }
-
-
 }

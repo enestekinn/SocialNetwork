@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.core.domain.data.repository
 
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.core.net.toFile
 import androidx.paging.Pager
@@ -30,7 +31,8 @@ import java.io.IOException
 class ProfileRepositoryImpl(
     private val profileApi: ProfileApi,
     private val postApi: PostApi,
-    private val gson: Gson
+    private val gson: Gson,
+    private val sharedPreferences: SharedPreferences // for log out
 ) : ProfileRepository {
     override suspend fun getProfile(userId: String): Resource<Profile> {
 
@@ -235,5 +237,10 @@ class ProfileRepositoryImpl(
         }
     }
 
+    override fun logout() {
+sharedPreferences.edit()
+    .remove(Constants.KEY_JWT_TOKEN)
+    .apply()
+    }
 
 }

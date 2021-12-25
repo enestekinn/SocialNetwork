@@ -89,7 +89,7 @@ viewModelScope.launch {
         onStateUpdated = {posts ->
                     _pagingState.value = pagingState.value.copy(
                 items = posts
-            ).also { println("toggleLikeForParent: $posts") }
+            )
         }
     )
 }

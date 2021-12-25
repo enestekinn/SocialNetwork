@@ -50,6 +50,12 @@ fun Navigation(
         composable(Screen.LoginScreen.route) {
             LoginScreen(
                 onNavigate = navController::navigate,
+                onLogin = {
+                          navController.popBackStack(
+                              route = Screen.MainFeedScreen.route,
+                              inclusive = false
+                          )
+                },
                 scaffoldState = scaffoldState
             )
         }
@@ -97,7 +103,19 @@ fun Navigation(
         ) {
             ProfileScreen(
                 userId = it.arguments?.getString("userId"),
-                onNavigateUp = navController::navigateUp,
+                onLogout = {
+                    navController.navigate(
+                        Screen.LoginScreen.route,
+
+                        ) {
+                           popUpTo(Screen.LoginScreen.route)
+                        if (navController.previousBackStackEntry?.destination?.route
+                        == Screen.LoginScreen.route){
+                       navController
+                        }
+
+                    }
+                },
                 onNavigate = navController::navigate,
                 scaffoldState = scaffoldState,
                 imageLoader = imageLoader
@@ -127,7 +145,7 @@ fun Navigation(
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
                 scaffoldState = scaffoldState,
-            imageLoader = imageLoader,
+                imageLoader = imageLoader,
             )
         }
 
@@ -164,10 +182,10 @@ fun Navigation(
         composable(
             route = Screen.PersonListScreen.route + "/{parentId}",
             arguments = listOf(
-                navArgument("parentId"){
+                navArgument("parentId") {
                     type = NavType.StringType
                 },
-                navArgument("shouldShowKeyboard"){
+                navArgument("shouldShowKeyboard") {
                     type = NavType.BoolType
                     defaultValue = false
                 }

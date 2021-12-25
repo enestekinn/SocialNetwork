@@ -76,9 +76,11 @@ class LoginViewModel @Inject constructor(
                     }
                     when (loginResult.result) {
                         is Resource.Success -> {
+
                             _eventFlow.emit(
                                 UiEvent.Navigate(Screen.MainFeedScreen.route)
                             )
+                            _eventFlow.emit(UiEvent.OnLogin)
 
                         }
                         is Resource.Error -> {

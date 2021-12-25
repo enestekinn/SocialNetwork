@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.di
 
+import android.content.SharedPreferences
 import com.enestekin.socialnetwork.feature_post.data.remote.PostApi
 import com.enestekin.socialnetwork.feature_profile.data.remote.ProfileApi
 import com.enestekin.socialnetwork.core.domain.data.repository.ProfileRepositoryImpl
@@ -34,8 +35,8 @@ object ProfileModule {
 
     @Provides
     @Singleton
-    fun profileRepository(profileApi: ProfileApi, postApi: PostApi, gson: Gson): ProfileRepository {
-        return ProfileRepositoryImpl(profileApi,postApi, gson)
+    fun profileRepository(profileApi: ProfileApi, postApi: PostApi, gson: Gson,sharedPreferences: SharedPreferences): ProfileRepository {
+        return ProfileRepositoryImpl(profileApi,postApi, gson,sharedPreferences)
     }
 
     @Provides
@@ -48,7 +49,8 @@ object ProfileModule {
             setSkillSelected = SetSkillSelectedUseCase(),
             getPostsForProfile = GetPostsForProfileUseCase(repository),
             searchUser = SearchUserUseCase(repository),
-            toggleFollowForUser = ToggleFollowStateForUserUseCase(repository)
+            toggleFollowForUser = ToggleFollowStateForUserUseCase(repository),
+            logout = LogoutUseCase(repository)
         )
     }
     @Provides
