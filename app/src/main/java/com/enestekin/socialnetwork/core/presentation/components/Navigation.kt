@@ -54,9 +54,10 @@ fun Navigation(
                 onNavigate = navController::navigate,
                 onLogin = {
                           navController.popBackStack(
-                              route = Screen.MainFeedScreen.route,
-                              inclusive = false
+                        route = Screen.LoginScreen.route,
+                        inclusive = true
                           )
+                    navController.navigate(route = Screen.MainFeedScreen.route)
                 },
                 scaffoldState = scaffoldState
             )
@@ -64,7 +65,7 @@ fun Navigation(
         composable(Screen.RegisterScreen.route) {
             RegisterScreen(
                 navController = navController,
-                scaffoldState = scaffoldState
+                scaffoldState = scaffoldState,
             )
         }
 
@@ -106,17 +107,7 @@ fun Navigation(
             ProfileScreen(
                 userId = it.arguments?.getString("userId"),
                 onLogout = {
-                    navController.navigate(
-                        Screen.LoginScreen.route,
-
-                        ) {
-                           popUpTo(Screen.LoginScreen.route)
-                        if (navController.previousBackStackEntry?.destination?.route
-                        == Screen.LoginScreen.route){
-                       navController
-                        }
-
-                    }
+                    navController.navigate(route = Screen.LoginScreen.route)
                 },
                 onNavigate = navController::navigate,
                 scaffoldState = scaffoldState,
@@ -147,7 +138,7 @@ fun Navigation(
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
                 scaffoldState = scaffoldState,
-                imageLoader = imageLoader,
+                imageLoader = imageLoader
             )
         }
 
@@ -166,6 +157,11 @@ fun Navigation(
                     name = "postId"
                 ) {
                     type = NavType.StringType
+                },
+                navArgument(
+                    name = "shouldShowKeyboard"
+                ) {
+                    type = NavType.BoolType
                     defaultValue = false
                 }
 
@@ -178,7 +174,7 @@ fun Navigation(
             )
         ) {
             val shouldShowKeyboard = it.arguments?.getBoolean("shouldShowKeyboard") ?: false
-            val postId = it.arguments?.getString("postId")
+            println("POST ID: ${it.arguments?.getString("postId")}")
             PostDetailScreen(
                 scaffoldState = scaffoldState,
                 onNavigateUp = navController::navigateUp,
@@ -195,10 +191,6 @@ fun Navigation(
             arguments = listOf(
                 navArgument("parentId") {
                     type = NavType.StringType
-                },
-                navArgument("shouldShowKeyboard") {
-                    type = NavType.BoolType
-                    defaultValue = false
                 }
             )
         ) {

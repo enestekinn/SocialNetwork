@@ -11,6 +11,7 @@ import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.ParentType
 import com.enestekin.socialnetwork.core.util.Resource
 import com.enestekin.socialnetwork.core.util.UiText
+import com.enestekin.socialnetwork.feature_auth.domain.use_case.AuthenticateUseCase
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
 import com.enestekin.socialnetwork.feature_post.presentation.util.CommentError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
+    private val authenticate: AuthenticateUseCase,
     private val postUseCases: PostUseCases,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -37,7 +39,10 @@ class PostDetailViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
+    private var isUserLoggedIn = false
+
     init {
+
         savedStateHandle.get<String>("postId")?.let { postId ->
             loadPostDetails(postId)
             loadCommentsForPost(postId)
@@ -72,9 +77,7 @@ class PostDetailViewModel @Inject constructor(
                     isLiked = isLiked
                 )
             }
-            is PostDetailEvent.SharePost -> {
 
-            }
             is PostDetailEvent.EnteredComment -> {
                 _commentTextFieldState.value = commentTextFieldState.value.copy(
                     text = event.comment,
@@ -90,6 +93,11 @@ class PostDetailViewModel @Inject constructor(
         isLiked: Boolean
     ) {
         viewModelScope.launch {
+            isUserLoggedIn = authenticate() is Resource.Success
+            if (!isUserLoggedIn){
+                _eventFlow.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.error_not_logged_in)))
+                return@launch
+            }
             val currentLikeCount = state.value.post?.likeCount ?: 0
             when (parentType) {
                 ParentType.Post.type -> {
@@ -144,7 +152,7 @@ class PostDetailViewModel @Inject constructor(
                                     comments = state.value.comments.map { comment ->
                                         if (comment.id == parentId) {
                                             comment.copy(
-                                                isLiked = !isLiked,
+                                            isLiked = isLiked,
                                             likeCount = if (comment.isLiked){
                                                 comment.likeCount -1
                                             } else comment.likeCount +1
@@ -163,6 +171,11 @@ class PostDetailViewModel @Inject constructor(
 
     private fun createComment(postId: String, comment: String) {
         viewModelScope.launch {
+            isUserLoggedIn = authenticate() is Resource.Success
+            if (!isUserLoggedIn){
+                _eventFlow.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.error_not_logged_in)))
+                return@launch
+            }
 
             _commentState.value = commentState.value.copy(
                 isLoading = true
