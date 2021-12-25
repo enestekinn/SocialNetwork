@@ -35,6 +35,7 @@ import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.presentation.util.asString
 import com.enestekin.socialnetwork.core.presentation.util.showKeyboard
 import com.enestekin.socialnetwork.core.util.Screen
+import com.enestekin.socialnetwork.core.util.sendSharePostIntent
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -148,6 +149,7 @@ fun PostDetailScreen(
 
                                         },
                                         onShareClick = {
+                                                       context.sendSharePostIntent(post.id)
 
                                         },
                                         onUsernameClick = {

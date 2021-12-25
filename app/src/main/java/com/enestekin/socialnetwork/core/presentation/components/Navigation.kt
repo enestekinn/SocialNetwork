@@ -1,5 +1,6 @@
 package com.enestekin.socialnetwork.core.presentation.components
 
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
@@ -10,6 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import com.enestekin.socialnetwork.core.util.Screen
@@ -164,17 +166,26 @@ fun Navigation(
                     name = "postId"
                 ) {
                     type = NavType.StringType
+                    defaultValue = false
                 }
 
+            ),
+            deepLinks = listOf(
+                navDeepLink {
+                    action = Intent.ACTION_VIEW
+                    uriPattern = "https://pl-coding.com/{postId}"
+                }
             )
         ) {
             val shouldShowKeyboard = it.arguments?.getBoolean("shouldShowKeyboard") ?: false
+            val postId = it.arguments?.getString("postId")
             PostDetailScreen(
                 scaffoldState = scaffoldState,
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
                 shouldShowKeyboard = shouldShowKeyboard,
                 imageLoader = imageLoader
+
 
             )
         }

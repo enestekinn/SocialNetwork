@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import com.enestekin.socialnetwork.core.presentation.components.Post
 import com.enestekin.socialnetwork.core.presentation.components.StandardToolbar
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceLarge
 import com.enestekin.socialnetwork.core.util.Screen
+import com.enestekin.socialnetwork.core.util.sendSharePostIntent
 import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,11 +42,12 @@ fun MainFeedScreen(
 ) {
 
     val pagingState = viewModel.pagingState.value
+    val context = LocalContext.current
 
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when(event){
+            when (event) {
                 is PostEvent.OnLiked -> {
 
                 }
@@ -83,7 +86,7 @@ fun MainFeedScreen(
             LazyColumn {
                 items(pagingState.items.size) { i ->
                     val post = pagingState.items[i]
-                    if(i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
+                    if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
                         viewModel.loadNextPosts()
                     }
                     Post(
@@ -100,6 +103,9 @@ fun MainFeedScreen(
                         },
                         onLikeClick = {
                             viewModel.onEvent(MainFeedEvent.LikedPost(post.id))
+                        },
+                        onSharedClick = {
+                            context.sendSharePostIntent(post.id)
                         }
                     )
                     if (i < pagingState.items.size - 1) { // last post
@@ -118,8 +124,6 @@ fun MainFeedScreen(
             }
 
         }
-
-
 
 
     }

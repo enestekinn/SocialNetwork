@@ -44,6 +44,7 @@ import com.enestekin.socialnetwork.core.presentation.ui.theme.SpaceSmall
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.presentation.util.asString
 import com.enestekin.socialnetwork.core.util.Screen
+import com.enestekin.socialnetwork.core.util.sendSharePostIntent
 import com.enestekin.socialnetwork.core.util.toPx
 import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEvent
 import com.enestekin.socialnetwork.feature_profile.presentation.profile.components.BannerSection
@@ -187,6 +188,9 @@ fun ProfileScreen(
                     },
                     onLikeClick = {
                         viewModel.onEvent(ProfileEvent.LikePost(post.id))
+                    },
+                    onSharedClick = {
+                        context.sendSharePostIntent(post.id)
                     }
                 )
             }

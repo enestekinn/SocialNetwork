@@ -1,15 +1,22 @@
 package com.enestekin.socialnetwork.core.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +26,7 @@ import com.enestekin.socialnetwork.core.presentation.components.StandardScaffold
 import com.enestekin.socialnetwork.core.presentation.ui.theme.SocialNetworkTheme
 import com.enestekin.socialnetwork.core.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -27,6 +35,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var imageLoader: ImageLoader
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +51,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val scaffoldState = rememberScaffoldState()
+
+
                     StandardScaffold(
                         navController = navController,
                         showBottomBar = shouldShowBottomBar(navBackStackEntry),
@@ -62,6 +74,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     // not a optimal solution
     private fun shouldShowBottomBar(backStackEntry: NavBackStackEntry?): Boolean {
