@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -92,7 +91,9 @@ fun ProfileScreen(
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
-                if (delta > 0f && lazyListState.firstVisibleItemIndex != 0) {
+                val shouldNotScroll = delta > 0f && lazyListState.firstVisibleItemIndex != 0 ||
+                        viewModel.pagingState.value.items.isEmpty()
+                if (shouldNotScroll) {
                     return Offset.Zero
                 }
                 val newOffset = viewModel.toolbarState.value.toolbarOffsetY + delta
@@ -105,11 +106,12 @@ fun ProfileScreen(
                 viewModel.setExpandedRatio((viewModel.toolbarState.value.toolbarOffsetY + maxOffset.toPx()) / maxOffset.toPx())
                 return Offset.Zero
             }
+
+
         }
     }
     val context = LocalContext.current
     LaunchedEffect(key1 = true) {
-        viewModel.setExpandedRatio(1f)
         viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -173,7 +175,7 @@ fun ProfileScreen(
             items(pagingState.items.size) { i ->
                 val post = pagingState.items[i]
                 if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
-                    viewModel.loadNextPost()
+                    viewModel.loadNextPosts()
                 }
 
                 Post(
@@ -296,7 +298,7 @@ fun ProfileScreen(
                             color = MaterialTheme.colors.onBackground,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.clickable {
-
+                                viewModel.onEvent(ProfileEvent.DismissLogoutDialog)
                             }
                         )
                         Spacer(modifier = Modifier.width(SpaceMedium))

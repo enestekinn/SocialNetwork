@@ -1,12 +1,10 @@
 package com.enestekin.socialnetwork.feature_profile.presentation.profile
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import com.enestekin.socialnetwork.core.domain.models.Post
 import com.enestekin.socialnetwork.core.domain.use_case.GetOwnUserIdUseCase
 import com.enestekin.socialnetwork.core.presentation.PagingState
@@ -14,12 +12,10 @@ import com.enestekin.socialnetwork.core.presentation.util.Event
 import com.enestekin.socialnetwork.core.presentation.util.UiEvent
 import com.enestekin.socialnetwork.core.util.*
 import com.enestekin.socialnetwork.feature_post.domain.use_case.PostUseCases
-import com.enestekin.socialnetwork.feature_post.presentation.person_list.PostEvent
 import com.enestekin.socialnetwork.feature_profile.domain.use_case.ProfileUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -87,7 +83,7 @@ private val paginator = DefaultPaginator(
     }
 
     init {
-        loadNextPost()
+        loadNextPosts()
     }
 
     fun onEvent(event: ProfileEvent) {
@@ -120,7 +116,7 @@ private val paginator = DefaultPaginator(
         }
     }
 
-    fun loadNextPost() {
+    fun loadNextPosts() {
         viewModelScope.launch {
 paginator.loadNextItems()
 
