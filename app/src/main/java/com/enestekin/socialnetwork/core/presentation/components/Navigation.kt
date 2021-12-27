@@ -18,7 +18,9 @@ import com.enestekin.socialnetwork.core.util.Screen
 import com.enestekin.socialnetwork.feature_activity.presentation.ActivityScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.login.LoginScreen
 import com.enestekin.socialnetwork.feature_auth.presentation.register.RegisterScreen
-import com.enestekin.socialnetwork.feature_chat.presentation.ChatScreen
+import com.enestekin.socialnetwork.feature_chat.presentation.chat.ChatScreen
+import com.enestekin.socialnetwork.feature_chat.presentation.domain.model.Chat
+import com.enestekin.socialnetwork.feature_chat.presentation.message.MessageScreen
 import com.enestekin.socialnetwork.feature_post.presentation.create_post.CreatePostScreen
 import com.enestekin.socialnetwork.feature_post.presentation.main_feed.MainFeedScreen
 import com.enestekin.socialnetwork.feature_post.presentation.person_list.PersonListScreen
@@ -88,6 +90,15 @@ fun Navigation(
 
             )
         }
+composable(Screen.MessagesScreen.route) {
+    MessageScreen(
+        chatId = "",
+        onNavigateUp = navController::navigateUp,
+        onNavigate = navController::navigate,
+        imageLoader = imageLoader
+
+    )
+}
         composable(Screen.ActivityScreen.route) {
             ActivityScreen(
                 onNavigateUp = navController::navigateUp,
